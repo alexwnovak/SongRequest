@@ -10,8 +10,9 @@ Future main() async {
   );
 
   final db = FirebaseFirestore.instance;
-  final d = await db.collection('gigs').doc('current').get();
-  print(d);
+  final currentGig = await db.collection('gigs').doc('current').get();
+  final obj = currentGig.data();
+  print(obj);
 
   runApp(const MyApp());
 }
