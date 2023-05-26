@@ -23,4 +23,9 @@ class Gig {
       startTime: (data?['startTime'] as Timestamp).toDate(),
     );
   }
+
+  @override
+  String toString() {
+    return "$id, $title, $startTime";
+  }
 }

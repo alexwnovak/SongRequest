@@ -58,9 +58,9 @@ class MyHomePage extends StatelessWidget {
       future: FirebaseFirestore.instance.collection('gigs').doc('current').get(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          // final gig = Gig.fromFirestore(snapshot.data!, null);
-          final x = snapshot.data!.data();
-          return Text(x.toString());
+          var data = snapshot.data! as DocumentSnapshot<Map<String, dynamic>>;
+          final gig = Gig.fromFirestore(data, null);
+          return Text(gig.toString());
         } else if (snapshot.hasError) {
           print('error');
           return const Text('error');
