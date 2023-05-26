@@ -1,6 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+Future main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  final db = FirebaseFirestore.instance;
+  final d = await db.collection('gigs').doc('current').get();
+  print(d);
+
   runApp(const MyApp());
 }
 
