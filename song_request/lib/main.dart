@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
+import 'gig.dart';
 
 Future main() async {
   await Firebase.initializeApp(
@@ -11,8 +12,8 @@ Future main() async {
 
   final db = FirebaseFirestore.instance;
   final currentGig = await db.collection('gigs').doc('current').get();
+  final gig = Gig.fromFirestore(currentGig, null);
   final obj = currentGig.data();
-  print(obj);
 
   runApp(const MyApp());
 }
