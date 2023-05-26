@@ -10,11 +10,6 @@ Future main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // final db = FirebaseFirestore.instance;
-  // final currentGig = await db.collection('gigs').doc('current').get();
-  // final gig = Gig.fromFirestore(currentGig, null);
-  // final obj = currentGig.data();
-
   runApp(const MyApp());
 }
 
