@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Gig {
-  final String id;
+  final String sessionId;
   final String title;
   final DateTime startTime;
 
   Gig({
-    required this.id,
+    required this.sessionId,
     required this.title,
     required this.startTime,
   });
@@ -18,7 +18,7 @@ class Gig {
     final data = snapshot.data();
 
     return Gig(
-      id: data?['id'],
+      sessionId: data?['sessionId'],
       title: data?['title'],
       startTime: (data?['startTime'] as Timestamp).toDate(),
     );
@@ -26,6 +26,6 @@ class Gig {
 
   @override
   String toString() {
-    return "$id, $title, $startTime";
+    return "$sessionId, $title, $startTime";
   }
 }
