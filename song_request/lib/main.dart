@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -83,6 +84,14 @@ class MyHomePage extends StatelessWidget {
                   itemBuilder: (c, element) {
                     return ListTile(
                       title: Text(element.title),
+                      onTap: () {
+                        var requestDoc = <String, dynamic>{
+                          'sessionId': gig.sessionId,
+                          'song': "${element.artist} - ${element.title}",
+                        };
+
+                        FirebaseFirestore.instance.collection('requests').add(requestDoc);
+                      },
                     );
                   },
                   groupSeparatorBuilder: (String value) {
