@@ -7,9 +7,9 @@ import 'firebase_options.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   // final data = await FirebaseFirestore.instance.collection('requests').get();
 
@@ -46,8 +46,17 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Backstage'),
+    return FutureBuilder<DocumentSnapshot>(
+      future: FirebaseFirestore.instance.collection('gigs').doc('current').get(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Text('working on it');
+        } else {
+          final data = snapshot.data! as DocumentSnapshot<Map<String, dynamic>>;
+          String sessionId = data['sessionId'];
+          return Text(sessionId);
+        }
+      },
     );
   }
 }
