@@ -62,10 +62,8 @@ class MyHomePage extends StatelessWidget {
           final gig = Gig.fromFirestore(data, null);
           return Text(gig.toString());
         } else if (snapshot.hasError) {
-          print('error');
           return const Text('error');
         } else {
-          print('nope');
           return const Text('working on it');
         }
       },
