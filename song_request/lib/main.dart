@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:song_request/song.dart';
 
 import 'firebase_options.dart';
 import 'gig.dart';
@@ -60,7 +61,27 @@ class MyHomePage extends StatelessWidget {
         if (snapshot.hasData) {
           var data = snapshot.data! as DocumentSnapshot<Map<String, dynamic>>;
           final gig = Gig.fromFirestore(data, null);
-          return Text(gig.toString());
+
+          return FutureBuilder<QuerySnapshot>(
+            future: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).get(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView(
+                  children: snapshot.data!.docs.map((DocumentSnapshot doc) {
+                    Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+                    final song = Song.fromMap(data);
+                    return ListTile(
+                      title: Text(song.title),
+                    );
+                  }).toList(),
+                );
+              } else if (snapshot.hasError) {
+                return const Text('error');
+              } else {
+                return const Text('still working on it');
+              }
+            },
+          );
         } else if (snapshot.hasError) {
           return const Text('error');
         } else {
