@@ -68,19 +68,6 @@ class MyHomePage extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return GroupedListView(
-                  // elements: snapshot.data!.docs.map((DocumentSnapshot doc) {
-                  //   Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
-                  //   final song = Song.fromMap(data);
-
-                  //   if (song.wasPlayed) {
-                  //     // This song was already played, so don't show it in the list
-                  //     return const SizedBox.shrink();
-                  //   }
-
-                  //   return ListTile(
-                  //     title: Text(song.toString()),
-                  //   );
-                  // }).toList(),
                   elements: snapshot.data!.docs
                       .map((DocumentSnapshot doc) {
                         Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
