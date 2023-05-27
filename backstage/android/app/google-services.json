@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "171190249655",
+    "firebase_url": "https://tenants-rule-default-rtdb.firebaseio.com",
+    "project_id": "tenants-rule",
+    "storage_bucket": "tenants-rule.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171190249655:android:2ba0aa3179952356884532",
+        "android_client_info": {
+          "package_name": "com.example.backstage"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_m1XzqlixbrYfK6etx6l1up7Ndav6n5g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
