@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Song {
   final String sessionId;
   final String artist;
@@ -19,20 +17,6 @@ class Song {
       artist: map['artist'],
       title: map['title'],
       wasPlayed: map['wasPlayed'] as bool,
-    );
-  }
-
-  factory Song.fromFirestore(
-    DocumentSnapshot<Map<String, dynamic>> snapshot,
-    SnapshotOptions? options,
-  ) {
-    final data = snapshot.data();
-
-    return Song(
-      sessionId: data?['sessionId'],
-      artist: data?['artist'],
-      title: data?['title'],
-      wasPlayed: data?['wasPlayed'] as bool,
     );
   }
 }
