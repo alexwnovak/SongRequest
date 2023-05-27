@@ -68,8 +68,8 @@ class MyHomePage extends StatelessWidget {
           var data = snapshot.data! as DocumentSnapshot<Map<String, dynamic>>;
           final gig = Gig.fromFirestore(data, null);
 
-          return FutureBuilder<QuerySnapshot>(
-            future: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).get(),
+          return StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return GroupedListView(
