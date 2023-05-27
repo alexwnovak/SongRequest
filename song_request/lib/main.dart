@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:song_request/song.dart';
 
 import 'firebase_options.dart';
@@ -66,20 +67,36 @@ class MyHomePage extends StatelessWidget {
             future: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).get(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return ListView(
-                  children: snapshot.data!.docs.map((DocumentSnapshot doc) {
-                    Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
-                    final song = Song.fromMap(data);
+                return GroupedListView(
+                  // elements: snapshot.data!.docs.map((DocumentSnapshot doc) {
+                  //   Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+                  //   final song = Song.fromMap(data);
 
-                    if (song.wasPlayed) {
-                      // This song was already played, so don't show it in the list
-                      return const SizedBox.shrink();
-                    }
+                  //   if (song.wasPlayed) {
+                  //     // This song was already played, so don't show it in the list
+                  //     return const SizedBox.shrink();
+                  //   }
 
+                  //   return ListTile(
+                  //     title: Text(song.toString()),
+                  //   );
+                  // }).toList(),
+                  elements: snapshot.data!.docs
+                      .map((DocumentSnapshot doc) {
+                        Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+                        return Song.fromMap(data);
+                      })
+                      .where((element) => element.wasPlayed == false)
+                      .toList(),
+                  groupBy: (element) => element.artist,
+                  itemBuilder: (c, element) {
                     return ListTile(
-                      title: Text(song.toString()),
+                      title: Text(element.title),
                     );
-                  }).toList(),
+                  },
+                  groupSeparatorBuilder: (String value) {
+                    return Text(value);
+                  },
                 );
               } else if (snapshot.hasError) {
                 return const Text('error');
