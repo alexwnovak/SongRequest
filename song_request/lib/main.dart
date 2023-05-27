@@ -71,7 +71,7 @@ class MyHomePage extends StatelessWidget {
                     Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
                     final song = Song.fromMap(data);
                     return ListTile(
-                      title: Text(song.title),
+                      title: Text(song.toString()),
                     );
                   }).toList(),
                 );

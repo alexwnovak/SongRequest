@@ -19,4 +19,7 @@ class Song {
       wasPlayed: map['wasPlayed'] as bool,
     );
   }
+
+  @override
+  String toString() => "$artist - $title";
 }
