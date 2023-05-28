@@ -103,14 +103,17 @@ class MyHomePage extends StatelessWidget {
             );
           }
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(gig.sessionId),
-              Text(gig.title),
-              Text(gig.startTime.toString()),
-            ],
+          return Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  gig.title,
+                  style: Theme.of(context).textTheme.headlineLarge,
+                ),
+              ],
+            ),
           );
         }
       },
