@@ -35,7 +35,7 @@ class BackstageDrawer extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Color.fromARGB(255, 76, 212, 221),
             ),
             child: Text('BACKSTAGE'),
           ),
@@ -69,6 +69,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 187, 239, 74),
           title: const Text('Backstage'),
         ),
         drawer: const BackstageDrawer(),
