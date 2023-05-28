@@ -147,7 +147,8 @@ class _StartSessionPageState extends State<StartSessionPage> {
                         startTime: DateTime.now(),
                       );
 
-                      print('Create with ${gig.toString()}');
+                      FirebaseFirestore.instance.collection('gigs').doc('current').update(gig.toMap());
+                      Navigator.pop(context);
                     },
                     child: const Text('Start Session'),
                   ),
