@@ -90,11 +90,16 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-class StartSessionPage extends StatelessWidget {
+class StartSessionPage extends StatefulWidget {
   const StartSessionPage({
     super.key,
   });
 
+  @override
+  State<StartSessionPage> createState() => _StartSessionPageState();
+}
+
+class _StartSessionPageState extends State<StartSessionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
