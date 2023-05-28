@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:uuid/uuid.dart';
 
 import 'firebase_options.dart';
 import 'package:common/gig.dart';
@@ -100,6 +101,19 @@ class StartSessionPage extends StatefulWidget {
 }
 
 class _StartSessionPageState extends State<StartSessionPage> {
+  final sessionNameController = TextEditingController();
+
+  void _onSessionNameChanged() {
+    print('Latst value: ${sessionNameController.value}');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    sessionNameController.addListener(_onSessionNameChanged);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,15 +125,44 @@ class _StartSessionPageState extends State<StartSessionPage> {
         child: Column(
           children: [
             const SizedBox(height: 40),
-            TextFormField(
+            TextField(
               decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Describe this session',
+                border: OutlineInputBorder(),
+                hintText: 'Describe this session',
+              ),
+              controller: sessionNameController,
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 32,
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      final gig = Gig(
+                        sessionId: const Uuid().v4(),
+                        title: sessionNameController.value.text,
+                        startTime: DateTime.now(),
+                      );
+
+                      print('Create with ${gig.toString()}');
+                    },
+                    child: const Text('Start Session'),
+                  ),
+                ),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    sessionNameController.dispose();
+    super.dispose();
   }
 }
