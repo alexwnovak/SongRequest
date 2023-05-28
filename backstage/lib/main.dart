@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:uuid/uuid.dart';
@@ -80,6 +81,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class SongRequest {
+  final String title;
+  final int count;
+
+  SongRequest({
+    required this.title,
+    required this.count,
+  });
+}
+
 class MyHomePage extends StatelessWidget {
   const MyHomePage({
     super.key,
@@ -112,12 +123,21 @@ class MyHomePage extends StatelessWidget {
               } else {
                 final x = snapshot.data!.docs.map((snapshot) {
                   return Request.fromMap(snapshot.data());
-                }).toList();
+                }).groupListsBy((element) => element.song);
+
+                final songs = <SongRequest>[];
+
+                x.forEach((key, value) {
+                  songs.add(SongRequest(title: key, count: value.length));
+                });
 
                 return ListView.builder(
                   itemCount: x.length,
                   itemBuilder: (context, index) {
-                    return Text(x[index].song);
+                    return ListTile(
+                      leading: Text(songs[index].count.toString()),
+                      title: Text(songs[index].title),
+                    );
                   },
                 );
               }
