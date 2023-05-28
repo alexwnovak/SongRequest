@@ -65,7 +65,7 @@ class MyHomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(gig.sessionId),
+              if (gig.sessionId.isEmpty) Text('No session') else Text(gig.sessionId),
               Text(gig.title),
               Text(gig.startTime.toString()),
             ],
