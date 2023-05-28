@@ -19,6 +19,14 @@ class Gig {
     );
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'sessionId': sessionId,
+      'title': title,
+      'startTime': startTime,
+    };
+  }
+
   @override
   String toString() {
     return "$sessionId, $title, $startTime";
