@@ -22,6 +22,39 @@ Future main() async {
   runApp(const MyApp());
 }
 
+class BackstageDrawer extends StatelessWidget {
+  const BackstageDrawer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Text('BACKSTAGE'),
+          ),
+          ListTile(
+            title: const Text('Start Session'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const StartSessionPage()),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -38,23 +71,7 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Backstage'),
         ),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text('BACKSTAGE'),
-              ),
-              ListTile(
-                title: const Text('Start Session'),
-                onTap: () {},
-              ),
-            ],
-          ),
-        ),
+        drawer: const BackstageDrawer(),
         body: const MyHomePage(),
       ),
     );
