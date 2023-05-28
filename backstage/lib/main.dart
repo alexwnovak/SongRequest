@@ -106,8 +106,19 @@ class _StartSessionPageState extends State<StartSessionPage> {
       appBar: AppBar(
         title: const Text('Start Session'),
       ),
-      body: const Center(
-        child: Text('Start session here'),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            const SizedBox(height: 40),
+            TextFormField(
+              decoration: const InputDecoration(
+                border: UnderlineInputBorder(),
+                labelText: 'Describe this session',
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
