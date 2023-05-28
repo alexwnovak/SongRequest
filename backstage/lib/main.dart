@@ -61,6 +61,15 @@ class MyHomePage extends StatelessWidget {
           final snapshotData = snapshot.data! as DocumentSnapshot<Map<String, dynamic>>;
           final gig = Gig.fromMap(snapshotData.data()!);
 
+          if (gig.sessionId.isEmpty) {
+            return Center(
+              child: ElevatedButton(
+                onPressed: () {},
+                child: const Text('Start session'),
+              ),
+            );
+          }
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
