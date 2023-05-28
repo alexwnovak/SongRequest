@@ -148,6 +148,13 @@ class MyHomePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.headlineLarge,
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Requests',
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
+                    ),
                     ListView.builder(
                       shrinkWrap: true,
                       itemCount: x.length,
@@ -157,6 +164,13 @@ class MyHomePage extends StatelessWidget {
                           title: Text(songs[index].title),
                         );
                       },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Played',
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
                     ),
                   ],
                 );
