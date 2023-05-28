@@ -49,8 +49,8 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<DocumentSnapshot>(
-      future: FirebaseFirestore.instance.collection('gigs').doc('current').get(),
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance.collection('gigs').doc('current').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(
