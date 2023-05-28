@@ -64,7 +64,12 @@ class MyHomePage extends StatelessWidget {
           if (gig.sessionId.isEmpty) {
             return Center(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const StartSessionPage()),
+                  );
+                },
                 child: const Text('Start session'),
               ),
             );
@@ -82,5 +87,16 @@ class MyHomePage extends StatelessWidget {
         }
       },
     );
+  }
+}
+
+class StartSessionPage extends StatelessWidget {
+  const StartSessionPage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
