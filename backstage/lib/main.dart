@@ -137,17 +137,6 @@ class StartSessionPage extends StatefulWidget {
 class _StartSessionPageState extends State<StartSessionPage> {
   final sessionNameController = TextEditingController();
 
-  void _onSessionNameChanged() {
-    print('Latst value: ${sessionNameController.value}');
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    sessionNameController.addListener(_onSessionNameChanged);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
