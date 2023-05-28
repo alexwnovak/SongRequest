@@ -50,11 +50,15 @@ class MyHomePage extends StatelessWidget {
       future: FirebaseFirestore.instance.collection('gigs').doc('current').get(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Text('working on it');
+          return const Center(
+            child: Text('working on it'),
+          );
         } else {
           final data = snapshot.data! as DocumentSnapshot<Map<String, dynamic>>;
           String sessionId = data['sessionId'];
-          return Text(sessionId);
+          return Center(
+            child: Text(sessionId),
+          );
         }
       },
     );
