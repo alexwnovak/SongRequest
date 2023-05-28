@@ -38,6 +38,23 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Backstage'),
         ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: Text('BACKSTAGE'),
+              ),
+              ListTile(
+                title: const Text('Start Session'),
+                onTap: () {},
+              ),
+            ],
+          ),
+        ),
         body: const MyHomePage(),
       ),
     );
