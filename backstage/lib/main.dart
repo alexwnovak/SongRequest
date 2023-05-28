@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase_options.dart';
+import 'package:common/gig.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,10 +58,17 @@ class MyHomePage extends StatelessWidget {
             child: Text('working on it'),
           );
         } else {
-          final data = snapshot.data! as DocumentSnapshot<Map<String, dynamic>>;
-          String sessionId = data['sessionId'];
-          return Center(
-            child: Text(sessionId),
+          final snapshotData = snapshot.data! as DocumentSnapshot<Map<String, dynamic>>;
+          final gig = Gig.fromMap(snapshotData.data()!);
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(gig.sessionId),
+              Text(gig.title),
+              Text(gig.startTime.toString()),
+            ],
           );
         }
       },
