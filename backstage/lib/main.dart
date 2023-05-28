@@ -102,8 +102,13 @@ class MyHomePage extends StatelessWidget {
       stream: FirebaseFirestore.instance.collection('gigs').doc('current').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Center(
-            child: Text('working on it'),
+          // This is the waiting phase for the initial "get the current session"
+          // call. This shows nothing since this happens pretty fast, while the
+          // next one--retrieving the songs--could be longer, so THAT one gets
+          // the progress indicator.
+          return const SizedBox(
+            width: 1,
+            height: 1,
           );
         } else {
           final snapshotData = snapshot.data! as DocumentSnapshot<Map<String, dynamic>>;
@@ -119,7 +124,9 @@ class MyHomePage extends StatelessWidget {
             stream: FirebaseFirestore.instance.collection('requests').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return const Text('working');
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               } else {
                 final x = snapshot.data!.docs.map((snapshot) {
                   return Request.fromMap(snapshot.data());
