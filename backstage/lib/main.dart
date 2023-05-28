@@ -138,14 +138,27 @@ class MyHomePage extends StatelessWidget {
                   songs.add(SongRequest(title: key, count: value.length));
                 });
 
-                return ListView.builder(
-                  itemCount: x.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: Text(songs[index].count.toString()),
-                      title: Text(songs[index].title),
-                    );
-                  },
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        gig.title,
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: x.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: Text(songs[index].count.toString()),
+                          title: Text(songs[index].title),
+                        );
+                      },
+                    ),
+                  ],
                 );
               }
             },
