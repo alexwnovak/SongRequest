@@ -97,16 +97,8 @@ class MyHomePage extends StatelessWidget {
           final gig = Gig.fromMap(snapshotData.data()!);
 
           if (gig.sessionId.isEmpty) {
-            return Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const StartSessionPage()),
-                  );
-                },
-                child: const Text('Start session'),
-              ),
+            return const Center(
+              child: Text('No session in progress'),
             );
           }
 
@@ -114,7 +106,7 @@ class MyHomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (gig.sessionId.isEmpty) Text('No session') else Text(gig.sessionId),
+              Text(gig.sessionId),
               Text(gig.title),
               Text(gig.startTime.toString()),
             ],
