@@ -138,6 +138,8 @@ class MyHomePage extends StatelessWidget {
                   songs.add(SongRequest(title: key, count: value.length));
                 });
 
+                songs.sort((r1, r2) => r2.count.compareTo(r1.count));
+
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
