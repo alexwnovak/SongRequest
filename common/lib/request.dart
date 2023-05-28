@@ -1,28 +1,28 @@
 class Request {
   final String sessionId;
-  final String title;
+  final String song;
 
   Request({
     required this.sessionId,
-    required this.title,
+    required this.song,
   });
 
   factory Request.fromMap(Map<String, dynamic> data) {
     return Request(
       sessionId: data['sessionId'],
-      title: data['title'],
+      song: data['song'],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'sessionId': sessionId,
-      'title': title,
+      'song': song,
     };
   }
 
   @override
   String toString() {
-    return "$sessionId, $title";
+    return "$sessionId, $song";
   }
 }

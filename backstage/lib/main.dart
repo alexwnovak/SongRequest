@@ -5,6 +5,7 @@ import 'package:uuid/uuid.dart';
 
 import 'firebase_options.dart';
 import 'package:common/gig.dart';
+import 'package:common/request.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -103,17 +104,24 @@ class MyHomePage extends StatelessWidget {
             );
           }
 
-          return Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  gig.title,
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-              ],
-            ),
+          return StreamBuilder(
+            stream: FirebaseFirestore.instance.collection('requests').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Text('working');
+              } else {
+                final x = snapshot.data!.docs.map((snapshot) {
+                  return Request.fromMap(snapshot.data());
+                }).toList();
+
+                return ListView.builder(
+                  itemCount: x.length,
+                  itemBuilder: (context, index) {
+                    return Text(x[index].song);
+                  },
+                );
+              }
+            },
           );
         }
       },
