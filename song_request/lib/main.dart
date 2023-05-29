@@ -77,33 +77,43 @@ class MyHomePage extends StatelessWidget {
           final gig = Gig.fromMap(data.data()!);
 
           return StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
+            stream: FirebaseFirestore.instance.collection('song_pool').snapshots(),
+            // stream: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                final songPoolData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
-                final songPool = SongPool.fromMap(songPoolData);
-                final normalizedSongPool = songPool.songIds.map((songId) => songCatalog.getById(songId)).toList();
-
-                return GroupedListView(
-                  elements: normalizedSongPool,
-                  groupBy: (element) => element.artist,
-                  itemBuilder: (c, element) {
-                    return ListTile(
-                      title: Text(element.title),
-                      onTap: () {
-                        final request = Request(
-                          sessionId: gig.sessionId,
-                          songId: element.id,
-                        );
-
-                        FirebaseFirestore.instance.collection('requests').add(request.toMap());
-                      },
-                    );
-                  },
-                  groupSeparatorBuilder: (String value) {
-                    return Text(value);
+                final items = snapshot.data!.docs;
+                return ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    final item = items[index];
+                    return Text(item['songId'].toString());
                   },
                 );
+
+                // final songPoolData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+                // final songPool = SongPool.fromMap(songPoolData);
+                // final normalizedSongPool = songPool.songIds.map((songId) => songCatalog.getById(songId)).toList();
+
+                // return GroupedListView(
+                //   elements: normalizedSongPool,
+                //   groupBy: (element) => element.artist,
+                //   itemBuilder: (c, element) {
+                //     return ListTile(
+                //       title: Text(element.title),
+                //       onTap: () {
+                //         final request = Request(
+                //           sessionId: gig.sessionId,
+                //           songId: element.id,
+                //         );
+
+                //         FirebaseFirestore.instance.collection('requests').add(request.toMap());
+                //       },
+                //     );
+                //   },
+                //   groupSeparatorBuilder: (String value) {
+                //     return Text(value);
+                //   },
+                // );
               } else if (snapshot.hasError) {
                 return const Text('error');
               } else {

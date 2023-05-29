@@ -89,73 +89,91 @@ class MyHomePage extends StatelessWidget {
           }
 
           return StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('requests').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
+            stream: FirebaseFirestore.instance.collection('song_pool').snapshots(), //.where('sessionId', isEqualTo: gig.sessionId).snapshots(),
             builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+              if (snapshot.hasData) {
+                final items = snapshot.data!.docs;
+                return ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: ((context, index) {
+                    final item = items[index].data();
+                    return Text(item['songId'].toString());
+                  }),
                 );
               } else {
-                final x = snapshot.data!.docs.map((snapshot) {
-                  return Request.fromMap(snapshot.data());
-                }).groupListsBy((element) => element.songId);
-
-                final songs = <SongRequest>[];
-
-                x.forEach((key, value) {
-                  songs.add(SongRequest(songId: key, count: value.length));
-                });
-
-                songs.sort((r1, r2) => r2.count.compareTo(r1.count));
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        gig.title,
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Requested',
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: x.length,
-                      itemBuilder: (context, index) {
-                        final song = songCatalog.getById(songs[index].songId);
-
-                        if (song == Song.empty) {
-                          // This is an unusual case where the songId doesn't match any song
-                          // in our catalog, so we'll just skip over it
-                          return const SizedBox.shrink();
-                        }
-
-                        return ListTile(
-                          leading: Text(songs[index].count.toString()),
-                          title: Text(song.artist),
-                          subtitle: Text(song.title),
-                        );
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Played',
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                    ),
-                  ],
-                );
+                return Placeholder();
               }
             },
           );
+
+          // return StreamBuilder(
+          //   stream: FirebaseFirestore.instance.collection('requests').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
+          //   builder: (context, snapshot) {
+          //     if (!snapshot.hasData) {
+          //       return const Center(
+          //         child: CircularProgressIndicator(),
+          //       );
+          //     } else {
+          //       final x = snapshot.data!.docs.map((snapshot) {
+          //         return Request.fromMap(snapshot.data());
+          //       }).groupListsBy((element) => element.songId);
+
+          //       final songs = <SongRequest>[];
+
+          //       x.forEach((key, value) {
+          //         songs.add(SongRequest(songId: key, count: value.length));
+          //       });
+
+          //       songs.sort((r1, r2) => r2.count.compareTo(r1.count));
+
+          //       return Column(
+          //         crossAxisAlignment: CrossAxisAlignment.start,
+          //         children: [
+          //           Padding(
+          //             padding: const EdgeInsets.all(8.0),
+          //             child: Text(
+          //               gig.title,
+          //               style: Theme.of(context).textTheme.headlineLarge,
+          //             ),
+          //           ),
+          //           Padding(
+          //             padding: const EdgeInsets.all(8.0),
+          //             child: Text(
+          //               'Requested',
+          //               style: Theme.of(context).textTheme.labelLarge,
+          //             ),
+          //           ),
+          //           ListView.builder(
+          //             shrinkWrap: true,
+          //             itemCount: x.length,
+          //             itemBuilder: (context, index) {
+          //               final song = songCatalog.getById(songs[index].songId);
+
+          //               if (song == Song.empty) {
+          //                 // This is an unusual case where the songId doesn't match any song
+          //                 // in our catalog, so we'll just skip over it
+          //                 return const SizedBox.shrink();
+          //               }
+
+          //               return ListTile(
+          //                 leading: Text(songs[index].count.toString()),
+          //                 title: Text(song.artist),
+          //                 subtitle: Text(song.title),
+          //               );
+          //             },
+          //           ),
+          //           Padding(
+          //             padding: const EdgeInsets.all(8.0),
+          //             child: Text(
+          //               'Played',
+          //               style: Theme.of(context).textTheme.labelLarge,
+          //             ),
+          //           ),
+          //         ],
+          //       );
+          //     }
+          //   },
+          // );
         }
       },
     );
