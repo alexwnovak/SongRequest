@@ -69,8 +69,8 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<DocumentSnapshot>(
-      future: dataService.getCurrentSession(),
+    return StreamBuilder<DocumentSnapshot>(
+      stream: dataService.getCurrentSession(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           var data = snapshot.data! as DocumentSnapshot<Map<String, dynamic>>;
