@@ -45,39 +45,39 @@ class _StartSessionPageState extends State<StartSessionPage> {
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
             ),
-            ListView(
-              shrinkWrap: true,
-              children: songCatalog.songs.map((s) {
-                return ListTile(
-                  leading: Checkbox(
-                    value: true,
-                    onChanged: (v) {},
-                  ),
-                  title: Text(s.artist),
-                  subtitle: Text(s.title),
-                );
-              }).toList(),
-            ),
             Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 32,
-                  ),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      final gig = Gig(
-                        sessionId: const Uuid().v4(),
-                        title: sessionNameController.value.text,
-                        startTime: DateTime.now(),
-                      );
+              child: ListView(
+                shrinkWrap: true,
+                children: songCatalog.songs.map((s) {
+                  return ListTile(
+                    leading: Checkbox(
+                      value: true,
+                      onChanged: (v) {},
+                    ),
+                    title: Text(s.artist),
+                    subtitle: Text(s.title),
+                  );
+                }).toList(),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 32,
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    final gig = Gig(
+                      sessionId: const Uuid().v4(),
+                      title: sessionNameController.value.text,
+                      startTime: DateTime.now(),
+                    );
 
-                      FirebaseFirestore.instance.collection('gigs').doc('current').update(gig.toMap());
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Start Session'),
-                  ),
+                    FirebaseFirestore.instance.collection('gigs').doc('current').update(gig.toMap());
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Start Session'),
                 ),
               ),
             ),
