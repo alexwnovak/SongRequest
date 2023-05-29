@@ -41,6 +41,7 @@ dependencies:
   firebase_core: ^2.13.0
   uuid: ^3.0.7
   collection: ^1.17.1
+  get_it: ^7.6.0
 
 dev_dependencies:
   flutter_test:
