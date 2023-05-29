@@ -76,6 +76,10 @@ class MyHomePage extends StatelessWidget {
           var data = snapshot.data! as DocumentSnapshot<Map<String, dynamic>>;
           final gig = Gig.fromMap(data.data()!);
 
+          if (gig.sessionId.isEmpty) {
+            return const Text('Not taking requests right now');
+          }
+
           return StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
             builder: (context, snapshot) {
