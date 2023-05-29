@@ -1,9 +1,41 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:common/gig.dart';
+import 'package:common/song.dart';
 import 'package:common/song_catalog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:uuid/uuid.dart';
+
+class SongPoolList extends StatefulWidget {
+  final List<Song> songs;
+
+  const SongPoolList({
+    super.key,
+    required this.songs,
+  });
+
+  @override
+  State<SongPoolList> createState() => _SongPoolListState();
+}
+
+class _SongPoolListState extends State<SongPoolList> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      shrinkWrap: true,
+      children: widget.songs.map((s) {
+        return ListTile(
+          leading: Checkbox(
+            value: true,
+            onChanged: (v) {},
+          ),
+          title: Text(s.artist),
+          subtitle: Text(s.title),
+        );
+      }).toList(),
+    );
+  }
+}
 
 class StartSessionPage extends StatefulWidget {
   const StartSessionPage({
@@ -46,18 +78,8 @@ class _StartSessionPageState extends State<StartSessionPage> {
               ),
             ),
             Expanded(
-              child: ListView(
-                shrinkWrap: true,
-                children: songCatalog.songs.map((s) {
-                  return ListTile(
-                    leading: Checkbox(
-                      value: true,
-                      onChanged: (v) {},
-                    ),
-                    title: Text(s.artist),
-                    subtitle: Text(s.title),
-                  );
-                }).toList(),
+              child: SongPoolList(
+                songs: songCatalog.songs,
               ),
             ),
             Align(
