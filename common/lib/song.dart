@@ -1,4 +1,12 @@
 class Song {
+  static final Song empty = Song(
+    id: 0,
+    artist: '',
+    title: '',
+    album: '',
+    year: 0,
+  );
+
   final int id;
   final String artist;
   final String title;

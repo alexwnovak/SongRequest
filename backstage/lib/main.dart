@@ -165,6 +165,12 @@ class MyHomePage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final song = songCatalog.getById(songs[index].songId);
 
+                        if (song == Song.empty) {
+                          // This is an unusual case where the songId doesn't match any song
+                          // in our catalog, so we'll just skip over it
+                          return const SizedBox.shrink();
+                        }
+
                         return ListTile(
                           leading: Text(songs[index].count.toString()),
                           title: Text(song.artist),

@@ -8,6 +8,9 @@ class SongCatalog {
   });
 
   Song getById(int songId) {
-    return songs.firstWhere((element) => element.id == songId);
+    return songs.firstWhere(
+      (element) => element.id == songId,
+      orElse: () => Song.empty,
+    );
   }
 }
