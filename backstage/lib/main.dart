@@ -114,7 +114,9 @@ class MyHomePage extends StatelessWidget {
                   ],
                 );
               } else {
-                return Placeholder();
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               }
             },
           );
