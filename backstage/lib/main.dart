@@ -9,7 +9,7 @@ import 'package:common/data_service.dart';
 import 'package:common/gig.dart';
 import 'package:common/song.dart';
 import 'package:common/song_catalog.dart';
-import 'package:common/song_pool.dart';
+import 'package:common/song_pool_entry.dart';
 
 late SongCatalog songCatalog;
 final DataService dataService = DataService();

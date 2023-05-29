@@ -5,7 +5,7 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:common/song.dart';
 import 'package:common/request.dart';
 import 'package:common/song_catalog.dart';
-import 'package:common/song_pool.dart';
+import 'package:common/song_pool_entry.dart';
 import 'package:common/gig.dart';
 import 'package:common/data_service.dart';
 
