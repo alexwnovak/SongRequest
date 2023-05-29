@@ -101,6 +101,11 @@ class MyHomePage extends StatelessWidget {
                         return ListTile(
                           title: Text(song.artist),
                           subtitle: Text(song.title),
+                          onTap: () {
+                            final documentId = items[index].id;
+                            final docRef = FirebaseFirestore.instance.collection('song_pool').doc(documentId);
+                            docRef.update({'requests': FieldValue.increment(1)});
+                          },
                         );
                       },
                     ),
