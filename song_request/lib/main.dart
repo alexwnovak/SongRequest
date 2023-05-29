@@ -7,10 +7,12 @@ import 'package:common/request.dart';
 import 'package:common/song_catalog.dart';
 import 'package:common/song_pool.dart';
 import 'package:common/gig.dart';
+import 'package:common/data_service.dart';
 
 import 'firebase_options.dart';
 
 late SongCatalog songCatalog;
+final DataService dataService = DataService();
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,7 +70,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
-      future: FirebaseFirestore.instance.collection('gigs').doc('current').get(),
+      future: dataService.getCurrentSession(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           var data = snapshot.data! as DocumentSnapshot<Map<String, dynamic>>;
