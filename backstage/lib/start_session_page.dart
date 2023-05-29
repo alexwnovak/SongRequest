@@ -28,13 +28,11 @@ class _SongPoolListState extends State<SongPoolList> {
     return ListView(
       shrinkWrap: true,
       children: widget.songs.map((s) {
-        return ListTile(
-          leading: Checkbox(
-            value: getValue(s.id),
-            onChanged: (value) => setState(() => values[s.id] = value ?? true),
-          ),
+        return CheckboxListTile(
           title: Text(s.artist),
           subtitle: Text(s.title),
+          value: getValue(s.id),
+          onChanged: (value) => setState(() => values[s.id] = value ?? true),
         );
       }).toList(),
     );
