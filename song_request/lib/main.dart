@@ -6,9 +6,9 @@ import 'package:common/song.dart';
 import 'package:common/request.dart';
 import 'package:common/song_catalog.dart';
 import 'package:common/song_pool.dart';
+import 'package:common/gig.dart';
 
 import 'firebase_options.dart';
-import 'gig.dart';
 
 late SongCatalog songCatalog;
 
@@ -72,7 +72,7 @@ class MyHomePage extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           var data = snapshot.data! as DocumentSnapshot<Map<String, dynamic>>;
-          final gig = Gig.fromFirestore(data, null);
+          final gig = Gig.fromMap(data.data()!);
 
           return StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
