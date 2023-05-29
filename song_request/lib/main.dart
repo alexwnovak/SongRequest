@@ -5,6 +5,7 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:common/song.dart';
 import 'package:common/request.dart';
 import 'package:common/song_catalog.dart';
+import 'package:common/song_pool.dart';
 
 import 'firebase_options.dart';
 import 'gig.dart';
@@ -77,25 +78,23 @@ class MyHomePage extends StatelessWidget {
             stream: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                final songPoolData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+                final songPool = SongPool.fromMap(songPoolData);
+                final normalizedSongPool = songPool.songIds.map((songId) => songCatalog.getById(songId)).toList();
+
                 return GroupedListView(
-                  elements: snapshot.data!.docs
-                      .map((DocumentSnapshot doc) {
-                        Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
-                        return Song.fromMap(data);
-                      })
-                      .where((element) => element.wasPlayed == false)
-                      .toList(),
+                  elements: normalizedSongPool,
                   groupBy: (element) => element.artist,
                   itemBuilder: (c, element) {
                     return ListTile(
                       title: Text(element.title),
                       onTap: () {
-                        var requestDoc = <String, dynamic>{
-                          'sessionId': gig.sessionId,
-                          'song': "${element.artist} - ${element.title}",
-                        };
+                        final request = Request(
+                          sessionId: gig.sessionId,
+                          songId: element.id,
+                        );
 
-                        FirebaseFirestore.instance.collection('requests').add(requestDoc);
+                        FirebaseFirestore.instance.collection('requests').add(request.toMap());
                       },
                     );
                   },
