@@ -6,4 +6,8 @@ class SongCatalog {
   SongCatalog({
     required this.songs,
   });
+
+  Song getById(int songId) {
+    return songs.firstWhere((element) => element.id == songId);
+  }
 }

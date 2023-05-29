@@ -84,11 +84,11 @@ class MyApp extends StatelessWidget {
 }
 
 class SongRequest {
-  final String title;
+  final int songId;
   final int count;
 
   SongRequest({
-    required this.title,
+    required this.songId,
     required this.count,
   });
 }
@@ -132,12 +132,12 @@ class MyHomePage extends StatelessWidget {
               } else {
                 final x = snapshot.data!.docs.map((snapshot) {
                   return Request.fromMap(snapshot.data());
-                }).groupListsBy((element) => element.song);
+                }).groupListsBy((element) => element.songId);
 
                 final songs = <SongRequest>[];
 
                 x.forEach((key, value) {
-                  songs.add(SongRequest(title: key, count: value.length));
+                  songs.add(SongRequest(songId: key, count: value.length));
                 });
 
                 songs.sort((r1, r2) => r2.count.compareTo(r1.count));
@@ -163,9 +163,12 @@ class MyHomePage extends StatelessWidget {
                       shrinkWrap: true,
                       itemCount: x.length,
                       itemBuilder: (context, index) {
+                        final song = songCatalog.getById(songs[index].songId);
+
                         return ListTile(
                           leading: Text(songs[index].count.toString()),
-                          title: Text(songs[index].title),
+                          title: Text(song.artist),
+                          subtitle: Text(song.title),
                         );
                       },
                     ),
