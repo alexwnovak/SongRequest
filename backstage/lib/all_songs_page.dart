@@ -12,6 +12,11 @@ class AllSongsPage extends StatefulWidget {
 class _AllSongsPageState extends State<AllSongsPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('All Songs'),
+      ),
+      body: Placeholder(),
+    );
   }
 }

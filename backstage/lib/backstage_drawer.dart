@@ -1,4 +1,3 @@
-import 'package:backstage/all_songs_page.dart';
 import 'package:backstage/start_session_page.dart';
 import 'package:flutter/material.dart';
 
@@ -29,15 +28,16 @@ class BackstageDrawer extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-              title: const Text('All Songs'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AllSongsPage()),
-                );
-              }),
+          // ListTile(
+          //   title: const Text('All Songs'),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => const AllSongsPage()),
+          //     );
+          //   },
+          // ),
         ],
       ),
     );
