@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get_it/get_it.dart';
 
 import 'backstage_drawer.dart';
 import 'firebase_options.dart';
@@ -14,6 +15,8 @@ import 'package:common/song_pool_entry.dart';
 late SongCatalog songCatalog;
 final DataService dataService = DataService();
 
+final getIt = GetIt.instance;
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -24,6 +27,7 @@ Future main() async {
   final allSongsSnapshot = await FirebaseFirestore.instance.collection('all_songs').get();
   final songList = allSongsSnapshot.docs.map((e) => Song.fromMap(e.data())).toList();
   songCatalog = SongCatalog(songs: songList);
+  getIt.registerSingleton(songCatalog, signalsReady: true);
 
   runApp(const MyApp());
 }

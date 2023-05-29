@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:common/gig.dart';
+import 'package:common/song_catalog.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:uuid/uuid.dart';
 
 class StartSessionPage extends StatefulWidget {
@@ -17,6 +19,8 @@ class _StartSessionPageState extends State<StartSessionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final songCatalog = GetIt.instance.get<SongCatalog>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Start Session'),
@@ -24,6 +28,7 @@ class _StartSessionPageState extends State<StartSessionPage> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 40),
             TextField(
@@ -32,6 +37,26 @@ class _StartSessionPageState extends State<StartSessionPage> {
                 hintText: 'Describe this session',
               ),
               controller: sessionNameController,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 24),
+              child: Text(
+                'Songs',
+                style: Theme.of(context).textTheme.headlineLarge,
+              ),
+            ),
+            ListView(
+              shrinkWrap: true,
+              children: songCatalog.songs.map((s) {
+                return ListTile(
+                  leading: Checkbox(
+                    value: true,
+                    onChanged: (v) {},
+                  ),
+                  title: Text(s.artist),
+                  subtitle: Text(s.title),
+                );
+              }).toList(),
             ),
             Expanded(
               child: Align(
