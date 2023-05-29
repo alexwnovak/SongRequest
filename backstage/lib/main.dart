@@ -53,16 +53,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class SongRequest {
-  final int songId;
-  final int count;
-
-  SongRequest({
-    required this.songId,
-    required this.count,
-  });
-}
-
 class MyHomePage extends StatelessWidget {
   const MyHomePage({
     super.key,
