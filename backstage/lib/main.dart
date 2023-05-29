@@ -90,7 +90,7 @@ class MyHomePage extends StatelessWidget {
           }
 
           return StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('song_pool').snapshots(), //.where('sessionId', isEqualTo: gig.sessionId).snapshots(),
+            stream: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final items = snapshot.data!.docs;

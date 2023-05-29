@@ -77,7 +77,7 @@ class MyHomePage extends StatelessWidget {
           final gig = Gig.fromMap(data.data()!);
 
           return StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('song_pool').snapshots(),
+            stream: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
             // stream: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
