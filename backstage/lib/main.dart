@@ -77,10 +77,7 @@ class MyHomePage extends StatelessWidget {
           // call. This shows nothing since this happens pretty fast, while the
           // next one--retrieving the songs--could be longer, so THAT one gets
           // the progress indicator.
-          return const SizedBox(
-            width: 1,
-            height: 1,
-          );
+          return const SizedBox.shrink();
         } else {
           final snapshotData = snapshot.data! as DocumentSnapshot<Map<String, dynamic>>;
           final gig = Gig.fromMap(snapshotData.data()!);
