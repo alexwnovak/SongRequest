@@ -9,8 +9,10 @@ import 'package:common/gig.dart';
 import 'package:common/request.dart';
 import 'package:common/song.dart';
 import 'package:common/song_catalog.dart';
+import 'package:common/data_service.dart';
 
 late SongCatalog songCatalog;
+final DataService dataService = DataService();
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,7 +70,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance.collection('gigs').doc('current').snapshots(),
+      stream: dataService.getCurrentSession(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           // This is the waiting phase for the initial "get the current session"
