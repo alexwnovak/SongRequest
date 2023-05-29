@@ -78,21 +78,33 @@ class MyHomePage extends StatelessWidget {
 
           return StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
-            // stream: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final items = snapshot.data!.docs;
-                return ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    final item = items[index].data() as Map<String, dynamic>;
-                    final songPool = SongPool.fromMap(item);
-                    final song = songCatalog.getById(songPool.songId);
-                    return ListTile(
-                      title: Text(song.artist),
-                      subtitle: Text(song.title),
-                    );
-                  },
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        gig.title,
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: items.length,
+                      itemBuilder: (context, index) {
+                        final item = items[index].data() as Map<String, dynamic>;
+                        final songPool = SongPool.fromMap(item);
+                        final song = songCatalog.getById(songPool.songId);
+                        return ListTile(
+                          title: Text(song.artist),
+                          subtitle: Text(song.title),
+                        );
+                      },
+                    ),
+                  ],
                 );
 
                 // final songPoolData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
