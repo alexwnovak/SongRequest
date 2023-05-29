@@ -16,7 +16,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
       appBar: AppBar(
         title: const Text('All Songs'),
       ),
-      body: Placeholder(),
+      body: const Placeholder(),
     );
   }
 }
