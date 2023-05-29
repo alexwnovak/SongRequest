@@ -94,18 +94,31 @@ class MyHomePage extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final items = snapshot.data!.docs;
-                return ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: ((context, index) {
-                    final item = items[index].data();
-                    final songPool = SongPool.fromMap(item);
-                    final song = songCatalog.getById(songPool.songId);
-                    return ListTile(
-                      leading: Text(songPool.requests.toString()),
-                      title: Text(song.artist),
-                      subtitle: Text(song.title),
-                    );
-                  }),
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        gig.title,
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: items.length,
+                      itemBuilder: ((context, index) {
+                        final item = items[index].data();
+                        final songPool = SongPool.fromMap(item);
+                        final song = songCatalog.getById(songPool.songId);
+                        return ListTile(
+                          leading: Text(songPool.requests.toString()),
+                          title: Text(song.artist),
+                          subtitle: Text(song.title),
+                        );
+                      }),
+                    ),
+                  ],
                 );
               } else {
                 return Placeholder();
