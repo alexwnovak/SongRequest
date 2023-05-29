@@ -7,6 +7,10 @@ import 'package:uuid/uuid.dart';
 import 'firebase_options.dart';
 import 'package:common/gig.dart';
 import 'package:common/request.dart';
+import 'package:common/song.dart';
+import 'package:common/song_catalog.dart';
+
+late SongCatalog songCatalog;
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,11 +19,9 @@ Future main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // final data = await FirebaseFirestore.instance.collection('requests').get();
-
-  // for (final d in data.docs) {
-  //   print(d);
-  // }
+  final allSongsSnapshot = await FirebaseFirestore.instance.collection('all_songs').get();
+  final songList = allSongsSnapshot.docs.map((e) => Song.fromMap(e.data())).toList();
+  songCatalog = SongCatalog(songs: songList);
 
   runApp(const MyApp());
 }
