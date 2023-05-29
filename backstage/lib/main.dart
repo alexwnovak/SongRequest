@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:common/song_pool.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -97,7 +98,13 @@ class MyHomePage extends StatelessWidget {
                   itemCount: items.length,
                   itemBuilder: ((context, index) {
                     final item = items[index].data();
-                    return Text(item['songId'].toString());
+                    final songPool = SongPool.fromMap(item);
+                    final song = songCatalog.getById(songPool.songId);
+                    return ListTile(
+                      leading: Text(songPool.requests.toString()),
+                      title: Text(song.artist),
+                      subtitle: Text(song.title),
+                    );
                   }),
                 );
               } else {
