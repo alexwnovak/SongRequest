@@ -98,7 +98,7 @@ class MyHomePage extends StatelessWidget {
                       itemCount: items.length,
                       itemBuilder: ((context, index) {
                         final item = items[index].data();
-                        final songPool = SongPool.fromMap(item);
+                        final songPool = SongPoolEntry.fromMap(item);
                         final song = songCatalog.getById(songPool.songId);
                         return ListTile(
                           leading: Text(songPool.requests.toString()),
