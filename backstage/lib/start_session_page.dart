@@ -19,6 +19,10 @@ class SongPoolList extends StatefulWidget {
 }
 
 class _SongPoolListState extends State<SongPoolList> {
+  final Map<int, bool> values = {};
+
+  bool getValue(int id) => values[id] ?? true;
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -26,8 +30,8 @@ class _SongPoolListState extends State<SongPoolList> {
       children: widget.songs.map((s) {
         return ListTile(
           leading: Checkbox(
-            value: true,
-            onChanged: (v) {},
+            value: getValue(s.id),
+            onChanged: (value) => setState(() => values[s.id] = value ?? true),
           ),
           title: Text(s.artist),
           subtitle: Text(s.title),
