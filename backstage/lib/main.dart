@@ -106,11 +106,12 @@ class MyHomePage extends StatelessWidget {
                       itemCount: items.length,
                       itemBuilder: ((context, index) {
                         final songPool = items[index];
-                        final song = songCatalog.getById(songPool.songId);
 
                         if (songPool.wasPlayed) {
                           return const SizedBox.shrink();
                         }
+
+                        final song = songCatalog.getById(songPool.songId);
 
                         return Dismissible(
                           key: Key(song.id.toString()),
