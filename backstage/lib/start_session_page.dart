@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:common/gig.dart';
 import 'package:common/song.dart';
 import 'package:common/song_catalog.dart';
+import 'package:common/song_pool_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:uuid/uuid.dart';
@@ -114,16 +115,26 @@ class _StartSessionPageState extends State<StartSessionPage> {
 
                     // Write every checked song as a SongPoolEntry to SongPool
 
-                    final includedSongs = <Song>[];
                     final checkedStates = key.currentState!.values;
+                    final writeBatch = FirebaseFirestore.instance.batch();
 
                     for (final checkState in checkedStates.entries) {
                       if (checkState.value) {
-                        final song = songCatalog.getById(checkState.key);
-                        includedSongs.add(song);
+                        final entry = SongPoolEntry(
+                          sessionId: gig.sessionId,
+                          songId: checkState.key,
+                          wasPlayed: false,
+                          requests: 0,
+                        );
+
+                        final newDoc = FirebaseFirestore.instance.collection('song_pool').doc();
+                        writeBatch.set(newDoc, entry.toMap());
                       }
                     }
 
+                    writeBatch.commit();
+
+                    // Navigate back
                     Navigator.pop(context);
                   },
                   child: const Text('Start Session'),

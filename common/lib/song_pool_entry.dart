@@ -19,4 +19,13 @@ class SongPoolEntry {
       requests: data['requests'] as int,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'sessionId': sessionId,
+      'songId': songId,
+      'wasPlayed': wasPlayed,
+      'requests': requests,
+    };
+  }
 }
