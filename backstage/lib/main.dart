@@ -86,7 +86,9 @@ class MyHomePage extends StatelessWidget {
             stream: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                final items = snapshot.data!.docs.map((e) => SongPoolEntry.fromMap(e.data())).toList();
+                final items = snapshot.data!.docs.map((e) {
+                  return SongPoolEntry.fromMap(e.data())..id = e.id;
+                }).toList();
                 items.sort((a, b) => b.requests.compareTo(a.requests));
 
                 return Column(
@@ -110,10 +112,21 @@ class MyHomePage extends StatelessWidget {
                           return const SizedBox.shrink();
                         }
 
-                        return ListTile(
-                          leading: Text(songPool.requests.toString()),
-                          title: Text(song.artist),
-                          subtitle: Text(song.title),
+                        return Dismissible(
+                          key: Key(song.id.toString()),
+                          background: Container(
+                            color: Colors.amber,
+                          ),
+                          onDismissed: (direction) {
+                            FirebaseFirestore.instance.collection('song_pool').doc(songPool.id).update(
+                              {'wasPlayed': true},
+                            );
+                          },
+                          child: ListTile(
+                            leading: Text(songPool.requests.toString()),
+                            title: Text(song.artist),
+                            subtitle: Text(song.title),
+                          ),
                         );
                       }),
                     ),
