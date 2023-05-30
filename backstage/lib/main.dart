@@ -117,6 +117,13 @@ class MyHomePage extends StatelessWidget {
                           key: Key(song.id.toString()),
                           background: Container(
                             color: Colors.amber,
+                            child: const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 8),
+                                child: Text('mark as played'),
+                              ),
+                            ),
                           ),
                           onDismissed: (direction) {
                             FirebaseFirestore.instance.collection('song_pool').doc(songPool.id).update(
