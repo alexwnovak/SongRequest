@@ -19,9 +19,16 @@ class SongPoolList extends StatefulWidget {
 }
 
 class _SongPoolListState extends State<SongPoolList> {
-  final Map<int, bool> values = {};
+  late final Map<int, bool> values = {};
 
-  bool getValue(int id) => values[id] ?? true;
+  @override
+  void initState() {
+    super.initState();
+
+    for (final song in widget.songs) {
+      values[song.id] = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +38,7 @@ class _SongPoolListState extends State<SongPoolList> {
         return CheckboxListTile(
           title: Text(s.artist),
           subtitle: Text(s.title),
-          value: getValue(s.id),
+          value: values[s.id],
           onChanged: (value) => setState(() => values[s.id] = value ?? true),
         );
       }).toList(),
@@ -54,6 +61,13 @@ class _StartSessionPageState extends State<StartSessionPage> {
   @override
   Widget build(BuildContext context) {
     final songCatalog = GetIt.instance.get<SongCatalog>();
+
+    final key = GlobalKey<_SongPoolListState>();
+
+    final songListWidget = SongPoolList(
+      key: key,
+      songs: songCatalog.songs,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -80,9 +94,7 @@ class _StartSessionPageState extends State<StartSessionPage> {
               ),
             ),
             Expanded(
-              child: SongPoolList(
-                songs: songCatalog.songs,
-              ),
+              child: songListWidget,
             ),
             Align(
               alignment: Alignment.bottomCenter,
@@ -99,6 +111,19 @@ class _StartSessionPageState extends State<StartSessionPage> {
                     );
 
                     FirebaseFirestore.instance.collection('gigs').doc('current').update(gig.toMap());
+
+                    // Write every checked song as a SongPoolEntry to SongPool
+
+                    final includedSongs = <Song>[];
+                    final checkedStates = key.currentState!.values;
+
+                    for (final checkState in checkedStates.entries) {
+                      if (checkState.value) {
+                        final song = songCatalog.getById(checkState.key);
+                        includedSongs.add(song);
+                      }
+                    }
+
                     Navigator.pop(context);
                   },
                   child: const Text('Start Session'),
