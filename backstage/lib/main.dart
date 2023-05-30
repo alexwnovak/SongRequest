@@ -116,17 +116,16 @@ class MyHomePage extends StatelessWidget {
                         return Dismissible(
                           key: Key(song.id.toString()),
                           background: Container(
-                            color: Colors.amber,
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('mark as played'),
-                                  Text('remove from pool'),
-                                ],
-                              ),
-                            ),
+                            alignment: AlignmentDirectional.centerStart,
+                            color: Colors.blue,
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: const Text('mark as played'),
+                          ),
+                          secondaryBackground: Container(
+                            alignment: AlignmentDirectional.centerEnd,
+                            color: Colors.red,
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: const Text('remove from pool'),
                           ),
                           onDismissed: (direction) {
                             if (direction == DismissDirection.startToEnd) {
