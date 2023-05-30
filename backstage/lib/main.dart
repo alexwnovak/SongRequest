@@ -86,7 +86,9 @@ class MyHomePage extends StatelessWidget {
             stream: FirebaseFirestore.instance.collection('song_pool').where('sessionId', isEqualTo: gig.sessionId).snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                final items = snapshot.data!.docs;
+                final items = snapshot.data!.docs.map((e) => SongPoolEntry.fromMap(e.data())).toList();
+                items.sort((a, b) => b.requests.compareTo(a.requests));
+
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -101,8 +103,7 @@ class MyHomePage extends StatelessWidget {
                       shrinkWrap: true,
                       itemCount: items.length,
                       itemBuilder: ((context, index) {
-                        final item = items[index].data();
-                        final songPool = SongPoolEntry.fromMap(item);
+                        final songPool = items[index];
                         final song = songCatalog.getById(songPool.songId);
                         return ListTile(
                           leading: Text(songPool.requests.toString()),
