@@ -117,18 +117,27 @@ class MyHomePage extends StatelessWidget {
                           key: Key(song.id.toString()),
                           background: Container(
                             color: Colors.amber,
-                            child: const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 8),
-                                child: Text('mark as played'),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('mark as played'),
+                                  Text('remove from pool'),
+                                ],
                               ),
                             ),
                           ),
                           onDismissed: (direction) {
-                            FirebaseFirestore.instance.collection('song_pool').doc(songPool.id).update(
-                              {'wasPlayed': true},
-                            );
+                            if (direction == DismissDirection.startToEnd) {
+                              // Swipe to the right marks it as "played"
+                              FirebaseFirestore.instance.collection('song_pool').doc(songPool.id).update(
+                                {'wasPlayed': true},
+                              );
+                            } else {
+                              // Remove from pool
+                              FirebaseFirestore.instance.collection('song_pool').doc(songPool.id).delete();
+                            }
                           },
                           child: ListTile(
                             leading: Text(songPool.requests.toString()),
