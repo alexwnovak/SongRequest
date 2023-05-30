@@ -1,4 +1,5 @@
 class SongPoolEntry {
+  late final String id;
   final String sessionId;
   final int songId;
   final bool wasPlayed;
