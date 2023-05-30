@@ -105,6 +105,11 @@ class MyHomePage extends StatelessWidget {
                       itemBuilder: ((context, index) {
                         final songPool = items[index];
                         final song = songCatalog.getById(songPool.songId);
+
+                        if (songPool.wasPlayed) {
+                          return const SizedBox.shrink();
+                        }
+
                         return ListTile(
                           leading: Text(songPool.requests.toString()),
                           title: Text(song.artist),
