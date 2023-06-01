@@ -1,7 +1,7 @@
 class SongPoolEntry {
   late final String id;
   final String sessionId;
-  final int songId;
+  final String songId;
   final bool wasPlayed;
   final int requests;
 

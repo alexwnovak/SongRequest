@@ -7,14 +7,13 @@ class Song {
     year: 0,
   );
 
-  final int id;
+  late final String id;
   final String artist;
   final String title;
   final String album;
   final int year;
 
   Song({
-    required this.id,
     required this.artist,
     required this.title,
     required this.album,

@@ -1,3 +1,4 @@
+import 'package:backstage/master_song_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,6 +17,11 @@ late SongCatalog songCatalog;
 final DataService dataService = DataService();
 
 final getIt = GetIt.instance;
+
+Future populateAllSongs() async {
+  final masterSongList = MasterSongList();
+  await masterSongList.populate();
+}
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -114,7 +120,7 @@ class MyHomePage extends StatelessWidget {
                         final song = songCatalog.getById(songPool.songId);
 
                         return Dismissible(
-                          key: Key(song.id.toString()),
+                          key: Key(song.id),
                           background: Container(
                             alignment: AlignmentDirectional.centerStart,
                             color: Colors.blue,

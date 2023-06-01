@@ -7,7 +7,7 @@ class SongCatalog {
     required this.songs,
   });
 
-  Song getById(int songId) {
+  Song getById(string songId) {
     return songs.firstWhere(
       (element) => element.id == songId,
       orElse: () => Song.empty,

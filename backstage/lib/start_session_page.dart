@@ -20,7 +20,7 @@ class SongPoolList extends StatefulWidget {
 }
 
 class _SongPoolListState extends State<SongPoolList> {
-  late final Map<int, bool> values = {};
+  late final Map<String, bool> values = {};
 
   @override
   void initState() {
