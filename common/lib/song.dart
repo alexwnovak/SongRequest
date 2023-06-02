@@ -1,11 +1,10 @@
 class Song {
   static final Song empty = Song(
-    id: 0,
     artist: '',
     title: '',
     album: '',
     year: 0,
-  );
+  )..id = '';
 
   late final String id;
   final String artist;
@@ -22,11 +21,10 @@ class Song {
 
   factory Song.fromMap(Map<String, dynamic> data) {
     return Song(
-      id: data['id'] as int,
       artist: data['artist'],
       title: data['title'],
       album: data['album'],
       year: data['year'] as int,
-    );
+    )..id = data['id'];
   }
 }

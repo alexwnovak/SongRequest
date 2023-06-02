@@ -30,8 +30,22 @@ Future main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  //====================
+  // Firestore data
+  //====================
+
+  // final masterSongList = MasterSongList();
+  // await masterSongList.populate();
+
+  //======================================================
+  // Read the master list of all songs
+  // We'll use this to relate Firestore IDs to real data
+  //======================================================
+
   final allSongsSnapshot = await FirebaseFirestore.instance.collection('all_songs').get();
-  final songList = allSongsSnapshot.docs.map((e) => Song.fromMap(e.data())).toList();
+  final songList = allSongsSnapshot.docs.map((e) {
+    return Song.fromMap(e.data())..id = e.id;
+  }).toList();
   songCatalog = SongCatalog(songs: songList);
   getIt.registerSingleton(songCatalog, signalsReady: true);
 
