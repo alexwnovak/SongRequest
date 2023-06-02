@@ -22,7 +22,7 @@ Future main() async {
   );
 
   final allSongsSnapshot = await FirebaseFirestore.instance.collection('all_songs').get();
-  final songList = allSongsSnapshot.docs.map((e) => Song.fromMap(e.data())).toList();
+  final songList = allSongsSnapshot.docs.map((e) => Song.fromFirestore(e)).toList();
   songCatalog = SongCatalog(songs: songList);
 
   runApp(const MyApp());
