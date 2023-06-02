@@ -86,7 +86,7 @@ class MyHomePage extends StatelessWidget {
               if (snapshot.hasData) {
                 final items = snapshot.data!.docs.map((e) {
                   final data = e.data() as Map<String, dynamic>;
-                  return SongPoolEntry.fromMap(data);
+                  return SongPoolEntry.fromMap(data)..id = e.id;
                 }).toList();
 
                 items.sort((a, b) {

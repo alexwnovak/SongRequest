@@ -109,7 +109,28 @@ class MyHomePage extends StatelessWidget {
                 final items = snapshot.data!.docs.map((e) {
                   return SongPoolEntry.fromFirestore(e);
                 }).toList();
-                items.sort((a, b) => b.requests.compareTo(a.requests));
+
+                items.sort((a, b) {
+                  final requestComp = b.requests.compareTo(a.requests);
+                  final songA = songCatalog.getById(a.songId);
+                  final songB = songCatalog.getById(b.songId);
+
+                  if (requestComp != 0) {
+                    // Different request values, so return the comparison
+                    return requestComp;
+                  } else {
+                    // Same request values, so now sort by arist
+                    final artistComp = songA.artist.compareTo(songB.artist);
+
+                    if (artistComp != 0) {
+                      // Artists are different, so return the comparison
+                      return artistComp;
+                    } else {
+                      // Arists are different, so sub-sort the title
+                      return songA.title.compareTo(songB.title);
+                    }
+                  }
+                });
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
