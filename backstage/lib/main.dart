@@ -68,7 +68,13 @@ class MyApp extends StatelessWidget {
           backgroundColor: const Color.fromARGB(255, 187, 239, 74),
           title: const Text('Backstage'),
         ),
-        drawer: const BackstageDrawer(),
+        drawer: BackstageDrawer(
+          stopSession: () async {
+            FirebaseFirestore.instance.collection('gigs').doc('current').update({
+              'sessionId': '',
+            });
+          },
+        ),
         body: const MyHomePage(),
       ),
     );
