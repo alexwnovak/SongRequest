@@ -92,7 +92,15 @@ class MyHomePage extends StatelessWidget {
                 items.sort((a, b) {
                   final songA = songCatalog.getById(a.songId);
                   final songB = songCatalog.getById(b.songId);
-                  return songA.artist.compareTo(songB.artist);
+                  final comp = songA.artist.compareTo(songB.artist);
+
+                  if (comp != 0) {
+                    // Different values, so return the comparison
+                    return comp;
+                  } else {
+                    // Same value, so SUB-sort it by song title
+                    return songA.title.compareTo(songB.title);
+                  }
                 });
 
                 return Column(
