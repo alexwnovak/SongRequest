@@ -137,31 +137,6 @@ class MyHomePage extends StatelessWidget {
                     ),
                   ],
                 );
-
-                // final songPoolData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
-                // final songPool = SongPool.fromMap(songPoolData);
-                // final normalizedSongPool = songPool.songIds.map((songId) => songCatalog.getById(songId)).toList();
-
-                // return GroupedListView(
-                //   elements: normalizedSongPool,
-                //   groupBy: (element) => element.artist,
-                //   itemBuilder: (c, element) {
-                //     return ListTile(
-                //       title: Text(element.title),
-                //       onTap: () {
-                //         final request = Request(
-                //           sessionId: gig.sessionId,
-                //           songId: element.id,
-                //         );
-
-                //         FirebaseFirestore.instance.collection('requests').add(request.toMap());
-                //       },
-                //     );
-                //   },
-                //   groupSeparatorBuilder: (String value) {
-                //     return Text(value);
-                //   },
-                // );
               } else if (snapshot.hasError) {
                 return const Text('error');
               } else {
