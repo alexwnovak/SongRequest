@@ -44,7 +44,7 @@ Future main() async {
 
   final allSongsSnapshot = await FirebaseFirestore.instance.collection('all_songs').get();
   final songList = allSongsSnapshot.docs.map((e) {
-    return Song.fromMap(e.data())..id = e.id;
+    return Song.fromFirestore(e);
   }).toList();
   songCatalog = SongCatalog(songs: songList);
   getIt.registerSingleton(songCatalog, signalsReady: true);

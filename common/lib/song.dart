@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Song {
   static final Song empty = Song(
     artist: '',
@@ -18,6 +20,16 @@ class Song {
     required this.album,
     required this.year,
   });
+
+  factory Song.fromFirestore(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) {
+    final data = snapshot.data();
+    return Song(
+      artist: data['artist'],
+      title: data['title'],
+      album: data['album'],
+      year: data['year'] as int,
+    )..id = snapshot.id;
+  }
 
   factory Song.fromMap(Map<String, dynamic> data) {
     return Song(
