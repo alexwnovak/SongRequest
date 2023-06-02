@@ -25,6 +25,9 @@ class BackstageDrawer extends StatelessWidget {
                   child: Text('BACKSTAGE'),
                 ),
                 ListTile(
+                  leading: const Icon(
+                    Icons.play_arrow,
+                  ),
                   title: const Text('Start Session'),
                   onTap: () {
                     Navigator.pop(context);
@@ -48,6 +51,9 @@ class BackstageDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: const Icon(
+              Icons.stop,
+            ),
             title: const Text('Stop Session'),
             onTap: () {
               Navigator.pop(context);
