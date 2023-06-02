@@ -107,7 +107,7 @@ class MyHomePage extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final items = snapshot.data!.docs.map((e) {
-                  return SongPoolEntry.fromMap(e.data())..id = e.id;
+                  return SongPoolEntry.fromFirestore(e);
                 }).toList();
                 items.sort((a, b) => b.requests.compareTo(a.requests));
 

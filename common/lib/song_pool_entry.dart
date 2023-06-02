@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class SongPoolEntry {
   late final String id;
   final String sessionId;
@@ -11,6 +13,17 @@ class SongPoolEntry {
     required this.wasPlayed,
     required this.requests,
   });
+
+  factory SongPoolEntry.fromFirestore(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) {
+    final data = snapshot.data();
+
+    return SongPoolEntry(
+      sessionId: data['sessionId'],
+      songId: data['songId'],
+      wasPlayed: data['wasPlayed'] as bool,
+      requests: data['requests'] as int,
+    )..id = snapshot.id;
+  }
 
   factory SongPoolEntry.fromMap(Map<String, dynamic> data) {
     return SongPoolEntry(
