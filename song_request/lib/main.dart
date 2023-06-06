@@ -89,17 +89,17 @@ class AnimatedListTileState extends State<AnimatedListTile> with SingleTickerPro
         animation: _animationController,
         builder: (BuildContext context, Widget? child) {
           return LayoutBuilder(builder: (context, constraints) {
-            return Container(
-              color: Colors.blue,
+            return SizedBox(
               height: 60,
               child: Stack(
                 children: [
                   Container(
                     width: constraints.maxWidth * _progressAnimation.value,
-                    height: 40,
+                    height: 60,
                     color: Colors.amber[100],
                   ),
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       widget.title,
