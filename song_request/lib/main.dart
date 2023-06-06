@@ -54,8 +54,6 @@ class AnimatedListTileState extends State<AnimatedListTile> with SingleTickerPro
   void initState() {
     super.initState();
 
-    print("Can animate: ${widget.canAnimate}");
-
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 4),
