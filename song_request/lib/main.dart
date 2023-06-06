@@ -64,7 +64,7 @@ class AnimatedListTileState extends State<AnimatedListTile> with SingleTickerPro
     _progressAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: Curves.decelerate,
+        curve: Curves.linear,
       ),
     );
 
@@ -85,31 +85,15 @@ class AnimatedListTileState extends State<AnimatedListTile> with SingleTickerPro
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: AnimatedBuilder(
+      title: widget.title,
+      subtitle: widget.subtitle,
+      trailing: AnimatedBuilder(
         animation: _animationController,
-        builder: (BuildContext context, Widget? child) {
-          return LayoutBuilder(builder: (context, constraints) {
-            return SizedBox(
-              height: 60,
-              child: Stack(
-                children: [
-                  Container(
-                    width: constraints.maxWidth * _progressAnimation.value,
-                    height: 60,
-                    color: Colors.amber[100],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      widget.title,
-                      widget.subtitle,
-                    ],
-                  ),
-                ],
-              ),
-            );
-          });
+        builder: (context, child) {
+          return CircularProgressIndicator(
+            color: Colors.purple[200],
+            value: _progressAnimation.value,
+          );
         },
       ),
       onTap: () {
