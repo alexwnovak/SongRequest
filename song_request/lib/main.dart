@@ -207,29 +207,14 @@ class _MyHomePageState extends State<MyHomePage> {
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                             onTap: () {
-                              print("Setting hasChosen to true");
                               setState(() => hasChosen = true);
+
+                              final documentId = items[index].id;
+                              final docRef = FirebaseFirestore.instance.collection('song_pool').doc(documentId);
+                              docRef.update({'requests': FieldValue.increment(1)});
                             },
-                            onCooldownComplete: () {
-                              setState(() => hasChosen = false);
-                            },
+                            onCooldownComplete: () => setState(() => hasChosen = false),
                           );
-                          // return Stack(children: [
-                          //   Container(
-                          //     width: 30,
-                          //     height: 30,
-                          //     color: Colors.blue,
-                          //   ),
-                          //   ListTile(
-                          //     title: Text(song.artist),
-                          //     subtitle: Text(song.title),
-                          //     onTap: () {
-                          //       // final documentId = items[index].id;
-                          //       // final docRef = FirebaseFirestore.instance.collection('song_pool').doc(documentId);
-                          //       // docRef.update({'requests': FieldValue.increment(1)});
-                          //     },
-                          //   ),
-                          // ]);
                         },
                       ),
                     ),
