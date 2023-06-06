@@ -96,27 +96,29 @@ class MyHomePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.headlineLarge,
                       ),
                     ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: items.length,
-                      itemBuilder: (context, index) {
-                        final songPool = items[index];
+                    Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: items.length,
+                        itemBuilder: (context, index) {
+                          final songPool = items[index];
 
-                        if (songPool.wasPlayed) {
-                          return const SizedBox.shrink();
-                        }
+                          if (songPool.wasPlayed) {
+                            return const SizedBox.shrink();
+                          }
 
-                        final song = songCatalog.getById(songPool.songId);
-                        return ListTile(
-                          title: Text(song.artist),
-                          subtitle: Text(song.title),
-                          onTap: () {
-                            final documentId = items[index].id;
-                            final docRef = FirebaseFirestore.instance.collection('song_pool').doc(documentId);
-                            docRef.update({'requests': FieldValue.increment(1)});
-                          },
-                        );
-                      },
+                          final song = songCatalog.getById(songPool.songId);
+                          return ListTile(
+                            title: Text(song.artist),
+                            subtitle: Text(song.title),
+                            onTap: () {
+                              final documentId = items[index].id;
+                              final docRef = FirebaseFirestore.instance.collection('song_pool').doc(documentId);
+                              docRef.update({'requests': FieldValue.increment(1)});
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ],
                 );
