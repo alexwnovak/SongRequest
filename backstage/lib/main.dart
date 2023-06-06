@@ -160,50 +160,52 @@ class MyHomePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.headlineLarge,
                       ),
                     ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: items.length,
-                      itemBuilder: ((context, index) {
-                        final songPool = items[index];
+                    Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: items.length,
+                        itemBuilder: ((context, index) {
+                          final songPool = items[index];
 
-                        if (songPool.wasPlayed) {
-                          return const SizedBox.shrink();
-                        }
+                          if (songPool.wasPlayed) {
+                            return const SizedBox.shrink();
+                          }
 
-                        final song = songCatalog.getById(songPool.songId);
+                          final song = songCatalog.getById(songPool.songId);
 
-                        return Dismissible(
-                          key: Key(song.id),
-                          background: Container(
-                            alignment: AlignmentDirectional.centerStart,
-                            color: Colors.blue,
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: const Text('mark as played'),
-                          ),
-                          secondaryBackground: Container(
-                            alignment: AlignmentDirectional.centerEnd,
-                            color: Colors.red,
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: const Text('remove from pool'),
-                          ),
-                          onDismissed: (direction) {
-                            if (direction == DismissDirection.startToEnd) {
-                              // Swipe to the right marks it as "played"
-                              FirebaseFirestore.instance.collection('song_pool').doc(songPool.id).update(
-                                {'wasPlayed': true},
-                              );
-                            } else {
-                              // Remove from pool
-                              FirebaseFirestore.instance.collection('song_pool').doc(songPool.id).delete();
-                            }
-                          },
-                          child: ListTile(
-                            leading: Text(songPool.requests.toString()),
-                            title: Text(song.artist),
-                            subtitle: Text(song.title),
-                          ),
-                        );
-                      }),
+                          return Dismissible(
+                            key: Key(song.id),
+                            background: Container(
+                              alignment: AlignmentDirectional.centerStart,
+                              color: Colors.blue,
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              child: const Text('mark as played'),
+                            ),
+                            secondaryBackground: Container(
+                              alignment: AlignmentDirectional.centerEnd,
+                              color: Colors.red,
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              child: const Text('remove from pool'),
+                            ),
+                            onDismissed: (direction) {
+                              if (direction == DismissDirection.startToEnd) {
+                                // Swipe to the right marks it as "played"
+                                FirebaseFirestore.instance.collection('song_pool').doc(songPool.id).update(
+                                  {'wasPlayed': true},
+                                );
+                              } else {
+                                // Remove from pool
+                                FirebaseFirestore.instance.collection('song_pool').doc(songPool.id).delete();
+                              }
+                            },
+                            child: ListTile(
+                              leading: Text(songPool.requests.toString()),
+                              title: Text(song.artist),
+                              subtitle: Text(song.title),
+                            ),
+                          );
+                        }),
+                      ),
                     ),
                   ],
                 );
