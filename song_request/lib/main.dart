@@ -26,6 +26,102 @@ Future main() async {
   runApp(const MyApp());
 }
 
+class AnimatedListTile extends StatefulWidget {
+  final bool canAnimate;
+  final Widget title;
+  final Widget subtitle;
+  final Function() onTap;
+  final Function() onCooldownComplete;
+
+  const AnimatedListTile({
+    super.key,
+    required this.canAnimate,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+    required this.onCooldownComplete,
+  });
+
+  @override
+  AnimatedListTileState createState() => AnimatedListTileState();
+}
+
+class AnimatedListTileState extends State<AnimatedListTile> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _progressAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    print("Can animate: ${widget.canAnimate}");
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4),
+    );
+
+    _progressAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.decelerate,
+      ),
+    );
+
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _animationController.reset();
+        widget.onCooldownComplete();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: AnimatedBuilder(
+        animation: _animationController,
+        builder: (BuildContext context, Widget? child) {
+          return LayoutBuilder(builder: (context, constraints) {
+            return Container(
+              color: Colors.blue,
+              height: 60,
+              child: Stack(
+                children: [
+                  Container(
+                    width: constraints.maxWidth * _progressAnimation.value,
+                    height: 40,
+                    color: Colors.amber[100],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      widget.title,
+                      widget.subtitle,
+                    ],
+                  ),
+                ],
+              ),
+            );
+          });
+        },
+      ),
+      onTap: () {
+        if (widget.canAnimate && !_animationController.isAnimating) {
+          _animationController.forward();
+          widget.onTap();
+        }
+      },
+    );
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -45,10 +141,17 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({
     super.key,
   });
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  bool hasChosen = false;
 
   @override
   Widget build(BuildContext context) {
@@ -108,15 +211,41 @@ class MyHomePage extends StatelessWidget {
                           }
 
                           final song = songCatalog.getById(songPool.songId);
-                          return ListTile(
-                            title: Text(song.artist),
-                            subtitle: Text(song.title),
+
+                          return AnimatedListTile(
+                            canAnimate: !hasChosen,
+                            title: Text(
+                              song.artist,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            subtitle: Text(
+                              song.title,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
                             onTap: () {
-                              final documentId = items[index].id;
-                              final docRef = FirebaseFirestore.instance.collection('song_pool').doc(documentId);
-                              docRef.update({'requests': FieldValue.increment(1)});
+                              print("Setting hasChosen to true");
+                              setState(() => hasChosen = true);
+                            },
+                            onCooldownComplete: () {
+                              setState(() => hasChosen = false);
                             },
                           );
+                          // return Stack(children: [
+                          //   Container(
+                          //     width: 30,
+                          //     height: 30,
+                          //     color: Colors.blue,
+                          //   ),
+                          //   ListTile(
+                          //     title: Text(song.artist),
+                          //     subtitle: Text(song.title),
+                          //     onTap: () {
+                          //       // final documentId = items[index].id;
+                          //       // final docRef = FirebaseFirestore.instance.collection('song_pool').doc(documentId);
+                          //       // docRef.update({'requests': FieldValue.increment(1)});
+                          //     },
+                          //   ),
+                          // ]);
                         },
                       ),
                     ),
