@@ -153,7 +153,10 @@ class _MyHomePageState extends State<MyHomePage> {
           final gig = Gig.fromMap(data.data()!);
 
           if (gig.sessionId.isEmpty) {
-            return const Text('Not taking requests right now');
+            return const Padding(
+              padding: EdgeInsets.all(12.0),
+              child: Text('Ope, catch you next time.'),
+            );
           }
 
           return StreamBuilder<QuerySnapshot>(
