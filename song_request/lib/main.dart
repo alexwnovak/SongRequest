@@ -28,6 +28,7 @@ Future main() async {
 
 class AnimatedListTile extends StatefulWidget {
   final bool canAnimate;
+  final bool enabled;
   final Widget title;
   final Widget subtitle;
   final Function() onTap;
@@ -36,6 +37,7 @@ class AnimatedListTile extends StatefulWidget {
   const AnimatedListTile({
     super.key,
     required this.canAnimate,
+    required this.enabled,
     required this.title,
     required this.subtitle,
     required this.onTap,
@@ -94,6 +96,7 @@ class AnimatedListTileState extends State<AnimatedListTile> with SingleTickerPro
           );
         },
       ),
+      enabled: widget.enabled,
       onTap: () {
         if (widget.canAnimate && !_animationController.isAnimating) {
           _animationController.forward();
@@ -201,6 +204,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                           return AnimatedListTile(
                             canAnimate: !hasChosen,
+                            enabled: !hasChosen,
                             title: Text(
                               song.artist,
                               style: hasChosen
