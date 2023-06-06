@@ -46,6 +46,19 @@ Future main() async {
   final songList = allSongsSnapshot.docs.map((e) {
     return Song.fromFirestore(e);
   }).toList();
+
+  songList.sort((a, b) {
+    int requestComp = a.artist.compareTo(b.artist);
+
+    if (requestComp != 0) {
+      // Different artists values, so return the comparison
+      return requestComp;
+    } else {
+      // Same request values, so now sort by title
+      return a.title.compareTo(b.title);
+    }
+  });
+
   songCatalog = SongCatalog(songs: songList);
   getIt.registerSingleton(songCatalog, signalsReady: true);
 
