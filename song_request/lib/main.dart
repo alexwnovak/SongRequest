@@ -203,11 +203,15 @@ class _MyHomePageState extends State<MyHomePage> {
                             canAnimate: !hasChosen,
                             title: Text(
                               song.artist,
-                              style: Theme.of(context).textTheme.bodyLarge,
+                              style: hasChosen
+                                  ? Theme.of(context).textTheme.bodyLarge!.copyWith(color: Theme.of(context).textTheme.bodyLarge!.color!.withAlpha(64))
+                                  : Theme.of(context).textTheme.bodyLarge,
                             ),
                             subtitle: Text(
                               song.title,
-                              style: Theme.of(context).textTheme.bodySmall,
+                              style: hasChosen
+                                  ? Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).textTheme.bodySmall!.color!.withAlpha(64))
+                                  : Theme.of(context).textTheme.bodySmall,
                             ),
                             onTap: () {
                               setState(() => hasChosen = true);
