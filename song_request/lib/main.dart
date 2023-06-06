@@ -116,8 +116,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Scaffold(
-        body: MyHomePage(),
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.cyan[200],
+          centerTitle: false,
+          title: const Text('Pick a song!'),
+        ),
+        body: const MyHomePage(),
       ),
     );
   }
@@ -174,13 +179,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        gig.title,
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: Text(
+                    //     gig.title,
+                    //     style: Theme.of(context).textTheme.headlineLarge,
+                    //   ),
+                    // ),
                     Expanded(
                       child: ListView.builder(
                         shrinkWrap: true,
