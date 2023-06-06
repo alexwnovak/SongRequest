@@ -34,8 +34,8 @@ Future main() async {
   // Firestore data
   //====================
 
-  // final masterSongList = MasterSongList();
-  // await masterSongList.populate();
+  // await populateAllSongs();
+  // return;
 
   //======================================================
   // Read the master list of all songs
