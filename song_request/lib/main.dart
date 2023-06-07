@@ -193,43 +193,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     //   ),
                     // ),
                     Expanded(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: items.length,
-                        itemBuilder: (context, index) {
-                          final songPool = items[index];
-
-                          if (songPool.wasPlayed) {
-                            return const SizedBox.shrink();
-                          }
-
-                          final song = songCatalog.getById(songPool.songId);
-
-                          return AnimatedListTile(
-                            canAnimate: !hasChosen,
-                            enabled: !hasChosen,
-                            title: Text(
-                              song.artist,
-                              style: hasChosen
-                                  ? Theme.of(context).textTheme.bodyLarge!.copyWith(color: Theme.of(context).textTheme.bodyLarge!.color!.withAlpha(64))
-                                  : Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            subtitle: Text(
-                              song.title,
-                              style: hasChosen
-                                  ? Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).textTheme.bodySmall!.color!.withAlpha(64))
-                                  : Theme.of(context).textTheme.bodySmall,
-                            ),
-                            onTap: () {
-                              setState(() => hasChosen = true);
-
-                              final documentId = items[index].id;
-                              final docRef = FirebaseFirestore.instance.collection('song_pool').doc(documentId);
-                              docRef.update({'requests': FieldValue.increment(1)});
-                            },
-                            onCooldownComplete: () => setState(() => hasChosen = false),
-                          );
-                        },
+                      child: SongList(
+                        songs: items,
                       ),
                     ),
                   ],
@@ -246,6 +211,56 @@ class _MyHomePageState extends State<MyHomePage> {
         } else {
           return const Text('working on it');
         }
+      },
+    );
+  }
+}
+
+class SongList extends StatefulWidget {
+  final List<SongPoolEntry> songs;
+
+  const SongList({
+    super.key,
+    required this.songs,
+  });
+
+  @override
+  State<SongList> createState() => _SongListState();
+}
+
+class _SongListState extends State<SongList> {
+  bool hasChosen = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final items = widget.songs;
+
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        final songPool = items[index];
+
+        if (songPool.wasPlayed) {
+          return const SizedBox.shrink();
+        }
+
+        final song = songCatalog.getById(songPool.songId);
+
+        return AnimatedListTile(
+          canAnimate: !hasChosen,
+          enabled: !hasChosen,
+          title: Text(song.artist),
+          subtitle: Text(song.title),
+          onTap: () {
+            setState(() => hasChosen = true);
+
+            final documentId = items[index].id;
+            final docRef = FirebaseFirestore.instance.collection('song_pool').doc(documentId);
+            docRef.update({'requests': FieldValue.increment(1)});
+          },
+          onCooldownComplete: () => setState(() => hasChosen = false),
+        );
       },
     );
   }
