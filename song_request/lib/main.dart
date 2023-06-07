@@ -231,6 +231,11 @@ class SongList extends StatefulWidget {
 class _SongListState extends State<SongList> {
   bool hasChosen = false;
 
+  Future reset() async {
+    await Future.delayed(const Duration(seconds: 4));
+    setState(() => hasChosen = false);
+  }
+
   @override
   Widget build(BuildContext context) {
     final items = widget.songs;
@@ -254,12 +259,13 @@ class _SongListState extends State<SongList> {
           subtitle: Text(song.title),
           onTap: () {
             setState(() => hasChosen = true);
+            reset();
 
             final documentId = items[index].id;
             final docRef = FirebaseFirestore.instance.collection('song_pool').doc(documentId);
             docRef.update({'requests': FieldValue.increment(1)});
           },
-          onCooldownComplete: () => setState(() => hasChosen = false),
+          onCooldownComplete: () {},
         );
       },
     );
