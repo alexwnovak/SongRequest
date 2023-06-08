@@ -236,6 +236,7 @@ class MainRegion extends StatefulWidget {
 class _MainRegionState extends State<MainRegion> {
   late final ConfettiController confetti;
   late bool isConfirmationVisible = false;
+  late Song? chosenSong = null;
 
   @override
   void initState() {
@@ -255,8 +256,9 @@ class _MainRegionState extends State<MainRegion> {
       children: [
         SongList(
           songs: widget.songs,
-          songChosen: () {
+          songChosen: (song) {
             setState(() {
+              chosenSong = song;
               isConfirmationVisible = true;
               Future.delayed(const Duration(seconds: 3)).then(
                 (value) => setState(() => isConfirmationVisible = false),
@@ -278,9 +280,19 @@ class _MainRegionState extends State<MainRegion> {
                   color: Colors.purple[100],
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.fastOutSlowIn,
-                  child: Text(
-                    'Thanks for the request!',
-                    style: Theme.of(context).textTheme.headlineSmall,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        'Thanks for the request!',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      if (chosenSong != null)
+                        Text(
+                          "${chosenSong!.artist} - ${chosenSong!.title}",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                    ],
                   ),
                 ),
                 Align(
@@ -304,7 +316,7 @@ class _MainRegionState extends State<MainRegion> {
 
 class SongList extends StatefulWidget {
   final List<SongPoolEntry> songs;
-  final Function() songChosen;
+  final Function(Song) songChosen;
 
   const SongList({
     super.key,
@@ -367,7 +379,7 @@ class _SongListState extends State<SongList> {
             );
 
             setState(() => items.remove(songPool));
-            widget.songChosen();
+            widget.songChosen(song);
           },
           onCooldownComplete: () {},
         );
