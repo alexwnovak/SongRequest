@@ -253,7 +253,10 @@ class _MainRegionState extends State<MainRegion> {
       children: [
         SongList(
           songs: widget.songs,
-          confetti: confetti,
+          songChosen: () {
+            confetti.stop();
+            confetti.play();
+          },
         ),
         Center(
           child: ConfettiWidget(
@@ -262,13 +265,6 @@ class _MainRegionState extends State<MainRegion> {
             shouldLoop: false,
           ),
         ),
-        // Center(
-        //   child: Container(
-        //     width: 80,
-        //     height: 80,
-        //     color: Colors.red,
-        //   ),
-        // ),
       ],
     );
   }
@@ -276,12 +272,12 @@ class _MainRegionState extends State<MainRegion> {
 
 class SongList extends StatefulWidget {
   final List<SongPoolEntry> songs;
-  final ConfettiController confetti;
+  final Function() songChosen;
 
   const SongList({
     super.key,
     required this.songs,
-    required this.confetti,
+    required this.songChosen,
   });
 
   @override
@@ -339,9 +335,7 @@ class _SongListState extends State<SongList> {
             );
 
             setState(() => items.remove(songPool));
-
-            widget.confetti.stop();
-            widget.confetti.play();
+            widget.songChosen();
           },
           onCooldownComplete: () {},
         );
