@@ -98,10 +98,10 @@ class AnimatedListTileState extends State<AnimatedListTile> with SingleTickerPro
       ),
       enabled: widget.enabled,
       onTap: () {
-        if (widget.canAnimate && !_animationController.isAnimating) {
-          _animationController.forward();
-          widget.onTap();
-        }
+        // if (widget.canAnimate && !_animationController.isAnimating) {
+        // _animationController.forward();
+        widget.onTap();
+        // }
       },
     );
   }
@@ -229,16 +229,26 @@ class SongList extends StatefulWidget {
 }
 
 class _SongListState extends State<SongList> {
+  late final List<SongPoolEntry> items;
   bool hasChosen = false;
 
-  Future reset() async {
-    await Future.delayed(const Duration(seconds: 4));
-    setState(() => hasChosen = false);
+  // Future reset(SongPoolEntry songPoolEntry) async {
+  //   await Future.delayed(const Duration(seconds: 4));
+  //   setState(() {
+  //     hasChosen = false;
+  //     widget.songs.remove(songPoolEntry);
+  //   });
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    items = widget.songs;
   }
 
   @override
   Widget build(BuildContext context) {
-    final items = widget.songs;
+    // final items = widget.songs;
 
     return ListView.builder(
       shrinkWrap: true,
@@ -257,13 +267,17 @@ class _SongListState extends State<SongList> {
           enabled: !hasChosen,
           title: Text(song.artist),
           subtitle: Text(song.title),
-          onTap: () {
-            setState(() => hasChosen = true);
-            reset();
+          onTap: () async {
+            // setState(() => hasChosen = true);
+            // reset(songPool);
 
             final documentId = items[index].id;
             final docRef = FirebaseFirestore.instance.collection('song_pool').doc(documentId);
-            docRef.update({'requests': FieldValue.increment(1)});
+            await docRef.update(
+              {'requests': FieldValue.increment(1)},
+            );
+
+            setState(() => items.remove(songPool));
           },
           onCooldownComplete: () {},
         );
