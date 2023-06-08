@@ -280,7 +280,8 @@ class _MainRegionState extends State<MainRegion> {
               alignment: Alignment.center,
               height: isConfirmationVisible ? 100 : 0,
               color: Colors.purple[100],
-              duration: const Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.fastOutSlowIn,
               child: Text(
                 'Thanks for the request!',
                 style: Theme.of(context).textTheme.headlineSmall,
