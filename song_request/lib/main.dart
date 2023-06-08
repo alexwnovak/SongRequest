@@ -294,6 +294,8 @@ class _MainRegionState extends State<MainRegion> {
           top: top,
           child: ConfettiWidget(
             confettiController: confetti,
+            numberOfParticles: 50,
+            gravity: 1,
             blastDirectionality: BlastDirectionality.explosive,
             shouldLoop: false,
           ),
