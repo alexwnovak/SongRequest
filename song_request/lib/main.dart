@@ -276,28 +276,31 @@ class _MainRegionState extends State<MainRegion> {
           alignment: Alignment.topCenter,
           child: Padding(
             padding: const EdgeInsets.only(top: 80),
-            child: AnimatedContainer(
-              alignment: Alignment.center,
-              height: isConfirmationVisible ? 100 : 0,
-              color: Colors.purple[100],
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.fastOutSlowIn,
-              child: Text(
-                'Thanks for the request!',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
+            child: Stack(
+              children: [
+                AnimatedContainer(
+                  alignment: Alignment.center,
+                  height: isConfirmationVisible ? 100 : 0,
+                  color: Colors.purple[100],
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.fastOutSlowIn,
+                  child: Text(
+                    'Thanks for the request!',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: ConfettiWidget(
+                    confettiController: confetti,
+                    numberOfParticles: 50,
+                    gravity: 1,
+                    blastDirectionality: BlastDirectionality.explosive,
+                    shouldLoop: false,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ),
-        Positioned(
-          left: left,
-          top: top,
-          child: ConfettiWidget(
-            confettiController: confetti,
-            numberOfParticles: 50,
-            gravity: 1,
-            blastDirectionality: BlastDirectionality.explosive,
-            shouldLoop: false,
           ),
         ),
       ],
