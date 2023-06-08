@@ -274,25 +274,27 @@ class _MainRegionState extends State<MainRegion> {
             padding: const EdgeInsets.only(top: 80),
             child: Stack(
               children: [
-                AnimatedContainer(
-                  alignment: Alignment.center,
-                  height: isConfirmationVisible ? 100 : 0,
-                  color: Colors.purple[100],
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.fastOutSlowIn,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        'Thanks for the request!',
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      if (chosenSong != null)
+                AnimatedOpacity(
+                  opacity: isConfirmationVisible ? 1 : 0,
+                  duration: const Duration(milliseconds: 400),
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 100,
+                    color: Colors.purple[100],
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
                         Text(
-                          "${chosenSong!.artist} - ${chosenSong!.title}",
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          'Thanks for the request!',
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
-                    ],
+                        if (chosenSong != null)
+                          Text(
+                            "${chosenSong!.artist} - ${chosenSong!.title}",
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                      ],
+                    ),
                   ),
                 ),
                 Align(
