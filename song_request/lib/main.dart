@@ -264,13 +264,29 @@ class _MainRegionState extends State<MainRegion> {
               left = offset.dx;
               top = offset.dy;
               isConfirmationVisible = true;
-              Future.delayed(const Duration(seconds: 1)).then(
+              Future.delayed(const Duration(seconds: 3)).then(
                 (value) => setState(() => isConfirmationVisible = false),
               );
             });
             confetti.stop();
             confetti.play();
           },
+        ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 80),
+            child: AnimatedContainer(
+              alignment: Alignment.center,
+              height: isConfirmationVisible ? 100 : 0,
+              color: Colors.purple[100],
+              duration: const Duration(milliseconds: 200),
+              child: Text(
+                'Thanks for the request!',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+          ),
         ),
         Positioned(
           left: left,
@@ -281,22 +297,6 @@ class _MainRegionState extends State<MainRegion> {
             shouldLoop: false,
           ),
         ),
-        if (isConfirmationVisible)
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 80),
-              child: Container(
-                alignment: Alignment.center,
-                height: 100,
-                color: Colors.purple[100],
-                child: Text(
-                  'Thanks for the request!',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-              ),
-            ),
-          ),
       ],
     );
   }
