@@ -239,6 +239,7 @@ class _MainRegionState extends State<MainRegion> {
   late final ConfettiController confetti;
   late double left = 0;
   late double top = 0;
+  late bool isConfirmationVisible = false;
 
   @override
   void initState() {
@@ -262,6 +263,10 @@ class _MainRegionState extends State<MainRegion> {
             setState(() {
               left = offset.dx;
               top = offset.dy;
+              isConfirmationVisible = true;
+              Future.delayed(const Duration(seconds: 1)).then(
+                (value) => setState(() => isConfirmationVisible = false),
+              );
             });
             confetti.stop();
             confetti.play();
@@ -276,6 +281,22 @@ class _MainRegionState extends State<MainRegion> {
             shouldLoop: false,
           ),
         ),
+        if (isConfirmationVisible)
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 80),
+              child: Container(
+                alignment: Alignment.center,
+                height: 100,
+                color: Colors.purple[100],
+                child: Text(
+                  'Thanks for the request!',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }
