@@ -32,7 +32,7 @@ class AnimatedListTile extends StatefulWidget {
   final bool enabled;
   final Widget title;
   final Widget subtitle;
-  final Function(Offset) onTap;
+  final Function() onTap;
   final Function() onCooldownComplete;
 
   const AnimatedListTile({
@@ -85,28 +85,26 @@ class AnimatedListTileState extends State<AnimatedListTile> with SingleTickerPro
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (details) => widget.onTap(details.globalPosition),
-      child: ListTile(
-        title: widget.title,
-        subtitle: widget.subtitle,
-        trailing: AnimatedBuilder(
-          animation: _animationController,
-          builder: (context, child) {
-            return CircularProgressIndicator(
-              color: Colors.purple[200],
-              value: _progressAnimation.value,
-            );
-          },
-        ),
-        enabled: widget.enabled,
-        // onTap: () {
-        // if (widget.canAnimate && !_animationController.isAnimating) {
-        // _animationController.forward();
-        // widget.onTap();
-        // }
-        // },
+    return ListTile(
+      title: widget.title,
+      subtitle: widget.subtitle,
+      trailing: AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) {
+          return CircularProgressIndicator(
+            color: Colors.purple[200],
+            value: _progressAnimation.value,
+          );
+        },
       ),
+      enabled: widget.enabled,
+      onTap: () => widget.onTap(),
+      // onTap: () {
+      // if (widget.canAnimate && !_animationController.isAnimating) {
+      // _animationController.forward();
+      // widget.onTap();
+      // }
+      // },
     );
   }
 }
@@ -237,8 +235,6 @@ class MainRegion extends StatefulWidget {
 
 class _MainRegionState extends State<MainRegion> {
   late final ConfettiController confetti;
-  late double left = 0;
-  late double top = 0;
   late bool isConfirmationVisible = false;
 
   @override
@@ -259,10 +255,8 @@ class _MainRegionState extends State<MainRegion> {
       children: [
         SongList(
           songs: widget.songs,
-          songChosen: (offset) {
+          songChosen: () {
             setState(() {
-              left = offset.dx;
-              top = offset.dy;
               isConfirmationVisible = true;
               Future.delayed(const Duration(seconds: 3)).then(
                 (value) => setState(() => isConfirmationVisible = false),
@@ -310,7 +304,7 @@ class _MainRegionState extends State<MainRegion> {
 
 class SongList extends StatefulWidget {
   final List<SongPoolEntry> songs;
-  final Function(Offset) songChosen;
+  final Function() songChosen;
 
   const SongList({
     super.key,
@@ -362,7 +356,7 @@ class _SongListState extends State<SongList> {
           enabled: !hasChosen,
           title: Text(song.artist),
           subtitle: Text(song.title),
-          onTap: (offset) async {
+          onTap: () async {
             // setState(() => hasChosen = true);
             // reset(songPool);
 
@@ -373,7 +367,7 @@ class _SongListState extends State<SongList> {
             );
 
             setState(() => items.remove(songPool));
-            widget.songChosen(offset);
+            widget.songChosen();
           },
           onCooldownComplete: () {},
         );
