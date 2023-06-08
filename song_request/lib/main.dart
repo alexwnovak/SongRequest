@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confetti/confetti.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:common/song.dart';
@@ -193,9 +194,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     //   ),
                     // ),
                     Expanded(
-                      child: SongList(
+                      child: MainRegion(
                         songs: items,
                       ),
+                      // child: SongList(
+                      //   songs: items,
+                      // ),
                     ),
                   ],
                 );
@@ -216,12 +220,68 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class MainRegion extends StatefulWidget {
+  final List<SongPoolEntry> songs;
+
+  const MainRegion({
+    super.key,
+    required this.songs,
+  });
+
+  @override
+  State<MainRegion> createState() => _MainRegionState();
+}
+
+class _MainRegionState extends State<MainRegion> {
+  late final ConfettiController confetti;
+
+  @override
+  void initState() {
+    super.initState();
+    confetti = ConfettiController(duration: const Duration(milliseconds: 100));
+  }
+
+  @override
+  void dispose() {
+    confetti.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        SongList(
+          songs: widget.songs,
+          confetti: confetti,
+        ),
+        Center(
+          child: ConfettiWidget(
+            confettiController: confetti,
+            blastDirectionality: BlastDirectionality.explosive,
+            shouldLoop: false,
+          ),
+        ),
+        // Center(
+        //   child: Container(
+        //     width: 80,
+        //     height: 80,
+        //     color: Colors.red,
+        //   ),
+        // ),
+      ],
+    );
+  }
+}
+
 class SongList extends StatefulWidget {
   final List<SongPoolEntry> songs;
+  final ConfettiController confetti;
 
   const SongList({
     super.key,
     required this.songs,
+    required this.confetti,
   });
 
   @override
@@ -230,6 +290,7 @@ class SongList extends StatefulWidget {
 
 class _SongListState extends State<SongList> {
   late final List<SongPoolEntry> items;
+
   bool hasChosen = false;
 
   // Future reset(SongPoolEntry songPoolEntry) async {
@@ -278,6 +339,9 @@ class _SongListState extends State<SongList> {
             );
 
             setState(() => items.remove(songPool));
+
+            widget.confetti.stop();
+            widget.confetti.play();
           },
           onCooldownComplete: () {},
         );
