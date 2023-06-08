@@ -207,14 +207,22 @@ class _MyHomePageState extends State<MyHomePage> {
               } else if (snapshot.hasError) {
                 return const Text('error');
               } else {
-                return const Text('still working on it');
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.green[100],
+                  ),
+                );
               }
             },
           );
         } else if (snapshot.hasError) {
           return const Text('error');
         } else {
-          return const Text('working on it');
+          return Center(
+            child: CircularProgressIndicator(
+              color: Colors.green[100],
+            ),
+          );
         }
       },
     );
