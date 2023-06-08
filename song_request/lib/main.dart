@@ -32,7 +32,7 @@ class AnimatedListTile extends StatefulWidget {
   final bool enabled;
   final Widget title;
   final Widget subtitle;
-  final Function() onTap;
+  final Function(Offset) onTap;
   final Function() onCooldownComplete;
 
   const AnimatedListTile({
@@ -85,25 +85,28 @@ class AnimatedListTileState extends State<AnimatedListTile> with SingleTickerPro
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: widget.title,
-      subtitle: widget.subtitle,
-      trailing: AnimatedBuilder(
-        animation: _animationController,
-        builder: (context, child) {
-          return CircularProgressIndicator(
-            color: Colors.purple[200],
-            value: _progressAnimation.value,
-          );
-        },
-      ),
-      enabled: widget.enabled,
-      onTap: () {
+    return GestureDetector(
+      onTapDown: (details) => widget.onTap(details.globalPosition),
+      child: ListTile(
+        title: widget.title,
+        subtitle: widget.subtitle,
+        trailing: AnimatedBuilder(
+          animation: _animationController,
+          builder: (context, child) {
+            return CircularProgressIndicator(
+              color: Colors.purple[200],
+              value: _progressAnimation.value,
+            );
+          },
+        ),
+        enabled: widget.enabled,
+        // onTap: () {
         // if (widget.canAnimate && !_animationController.isAnimating) {
         // _animationController.forward();
-        widget.onTap();
+        // widget.onTap();
         // }
-      },
+        // },
+      ),
     );
   }
 }
@@ -234,6 +237,8 @@ class MainRegion extends StatefulWidget {
 
 class _MainRegionState extends State<MainRegion> {
   late final ConfettiController confetti;
+  late double left = 0;
+  late double top = 0;
 
   @override
   void initState() {
@@ -253,12 +258,18 @@ class _MainRegionState extends State<MainRegion> {
       children: [
         SongList(
           songs: widget.songs,
-          songChosen: () {
+          songChosen: (offset) {
+            setState(() {
+              left = offset.dx;
+              top = offset.dy;
+            });
             confetti.stop();
             confetti.play();
           },
         ),
-        Center(
+        Positioned(
+          left: left,
+          top: top,
           child: ConfettiWidget(
             confettiController: confetti,
             blastDirectionality: BlastDirectionality.explosive,
@@ -272,7 +283,7 @@ class _MainRegionState extends State<MainRegion> {
 
 class SongList extends StatefulWidget {
   final List<SongPoolEntry> songs;
-  final Function() songChosen;
+  final Function(Offset) songChosen;
 
   const SongList({
     super.key,
@@ -324,7 +335,7 @@ class _SongListState extends State<SongList> {
           enabled: !hasChosen,
           title: Text(song.artist),
           subtitle: Text(song.title),
-          onTap: () async {
+          onTap: (offset) async {
             // setState(() => hasChosen = true);
             // reset(songPool);
 
@@ -335,7 +346,7 @@ class _SongListState extends State<SongList> {
             );
 
             setState(() => items.remove(songPool));
-            widget.songChosen();
+            widget.songChosen(offset);
           },
           onCooldownComplete: () {},
         );
